@@ -46,6 +46,7 @@ echo "12345">.vaultpassword
     - `editvault.sh`: script to change secret variables ex `./editvault.sh dev` modifies the file: `./dev/vars/secret.yml`. This requires `.vaultpassword` to be present.
     - `.vaultpassword`: contains the password to decrypt the vault. Do not commit this file!
     - `dev.yml, prod.yml, test.yml`: orchestrate deployment. **They should only contain information about the environment (profile) and roles to execute**. Example:
+    
         ```
         - hosts: localhost
           gather_facts: yes
