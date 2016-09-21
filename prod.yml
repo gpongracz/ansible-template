@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  gather_facts: yes
+  environment:
+    AWS_PROFILE: "AWS PROD PROFILE HERE IF NEEDED"
+  roles:
+    - prod
+    - infra
