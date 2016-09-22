@@ -1,8 +1,6 @@
 ---
 - include_vars: main.yml
 
-- include_vars: foo.yml
+- include: ec2_autoscaling.yml
 
-- include: task_1.yml
-
-- include: task_2.yml
+- include: ecs_cluster.yml

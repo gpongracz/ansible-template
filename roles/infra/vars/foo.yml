@@ -1,1 +1,0 @@
-app_secret_var: "Secret url - {{ secret_url }}"
