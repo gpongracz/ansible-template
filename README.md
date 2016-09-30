@@ -9,6 +9,8 @@ Install by executing the following command :
 
  ```
  sudo pip install -U git+https://github.com/ansible/ansible.git@devel#egg=ansible
+ sudo pip install -U boto
+ sudo pip install -U boto3
  ```
 
 ## Adding password file (needed to run example)
