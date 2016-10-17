@@ -6,7 +6,7 @@
 - include_vars: main.yml
 
 - include: ec2_autoscaling.yml
-  when: "{{ enable_auto_scaling_group }}
+  when: "{{ enable_auto_scaling_group }}"
 
 - include: ecs_cluster.yml
 
