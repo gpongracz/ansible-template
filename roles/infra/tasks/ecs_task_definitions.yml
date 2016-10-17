@@ -1,8 +1,8 @@
 #
 # This file is part of the ansible-template projet and should not be changed
 #
-
 ---
+
 - name: Create ECS task definition
   ecs_taskdefinition:
     region: "{{ aws_region }}"

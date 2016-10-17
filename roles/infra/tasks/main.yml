@@ -1,8 +1,8 @@
 #
 # This file is part of the ansible-template projet and should not be changed
 #
-
 ---
+
 - include_vars: main.yml
 
 - include: ec2_autoscaling.yml
@@ -11,3 +11,5 @@
 - include: ecs_cluster.yml
 
 - include: ecs_task_definitions.yml
+
+- include: ecs_service.yml
