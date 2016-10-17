@@ -4,8 +4,10 @@ This template is supposed to live inside a deployable or infrastructure project 
 To download and bootstrap a new template instance :
 
 ```
-curl -L https://github.com/simple-machines/ansible-template/archive/niels/features-and-update.zip | tar zxv
+curl -L https://github.com/simple-machines/ansible-template/archive/niels/master.tar.gz | tar zxv
 echo "12345">.vaultpassword
+ansible-vault create --vault-password-file .vaultpassword roles/dev/vars/secret.yml
+ansible-vault create --vault-password-file .vaultpassword roles/prod/vars/secret.yml
 ```
 
 ## Ansible
