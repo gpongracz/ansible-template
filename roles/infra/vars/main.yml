@@ -46,5 +46,5 @@ asg_additional_tags: []
 #             bootcmd:
 #               - docker pull amazon/amazon-ecs-agent:latest
 
-ecs_cluster_name: {{ application_name }}
+ecs_cluster_name: "{{ application_name }}"
 docker_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"

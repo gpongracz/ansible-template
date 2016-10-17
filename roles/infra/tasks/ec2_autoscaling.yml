@@ -14,8 +14,8 @@
       region: "{{ region }}"
       rules:
         - proto: tcp
-          from_port: {{ application_port }}
-          to_port: {{ application_port }}
+          from_port: "{{ application_port }}"
+          to_port: "{{ application_port }}"
           cidr_ip: 0.0.0.0/0
         - proto: tcp
           from_port: 22
@@ -34,7 +34,7 @@
     instance_type: "{{ launch_config_instance_size }}"
     user_data: "{{ launch_config_user_data }}"
     instance_profile_name: "{{ launch_config_instance_profile_name }}"
-    assign_public_ip: {{ launch_config_assign_public_ip }}
+    assign_public_ip: "{{ launch_config_assign_public_ip }}"
   register: app_launch_config
 
 - name: create autoscaling group
@@ -50,4 +50,4 @@
     vpc_zone_identifier: "{{ asg_subnets | join(',') }}"
     health_check_type: EC2
     health_check_period: 300
-    tags: {{ asg_additional_tags }}
+    tags: "{{ asg_additional_tags }}"

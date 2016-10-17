@@ -9,13 +9,13 @@
     region: "{{ region }}"
     containers:
     - name: "{{ item.container_name }}"
-      cpu: {{ item.cpu }}
-      essential: {{ item.essential }}
-      image:  {{ item.image }}# "{{ docker_repo }}/{{ app_name }}:{{docker_tag}}"
-      memory: {{ item.memory }}
-      environment: {{ item.environment }}
-      portMappings: {{ item.portMappings }}
-      links: {{ item.links}}
+      cpu: "{{ item.cpu }}"
+      essential: "{{ item.essential }}"
+      image:  "{{ item.image }}" # {{ docker_repo }}/{{ app_name }}:{{docker_tag}}
+      memory: "{{ item.memory }}"
+      environment: "{{ item.environment }}"
+      portMappings: "{{ item.portMappings }}"
+      links: "{{ item.links}}"
     state: present
     family: "{{ ecs_task_name }}"
-    register: ecs_task
+    register: "ecs_task_{{ item.container_name }}"
