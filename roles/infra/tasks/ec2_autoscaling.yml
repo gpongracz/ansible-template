@@ -7,7 +7,6 @@
 # If the
 - name: Application inbound traffic
   ec2_group:
-      profile: "{{ profile }}"
       name: "{{ application_name  }}-app"
       description: Allows traffic into the application server
       vpc_id: "{{ vpc_id }}"
@@ -25,7 +24,6 @@
 
 - name: Launch configuration
   ec2_lc:
-    profile: "{{ profile }}"
     name: "{{ application_name }}_{{ launch_config_version }}" # Important, change this if changing anything else or it WILL NOT come into effect.
     image_id: "{{ launch_config_ami }}"
     key_name: "{{ launch_config_key_name }}"
@@ -39,7 +37,6 @@
 
 - name: create autoscaling group
   ec2_asg:
-    profile: "{{ profile }}"
     name: "{{ app_name }}"
     # load_balancers: "{{ app_name }}"
     launch_config_name: "{{ app_launch_config['name'] }}"
