@@ -11,7 +11,7 @@
       name: "{{ application_name  }}-app"
       description: Allows traffic into the application server
       vpc_id: "{{ vpc_id }}"
-      region: "{{ region }}"
+      region: "{{ aws_region }}"
       rules:
         - proto: tcp
           from_port: "{{ application_port }}"
@@ -29,7 +29,7 @@
     name: "{{ application_name }}_{{ launch_config_version }}" # Important, change this if changing anything else or it WILL NOT come into effect.
     image_id: "{{ launch_config_ami }}"
     key_name: "{{ launch_config_key_name }}"
-    region: "{{ region }}"
+    region: "{{ aws_region }}"
     security_groups: "{{ [ app_security_group['group_id']] }}"
     instance_type: "{{ launch_config_instance_size }}"
     user_data: "{{ launch_config_user_data }}"
@@ -46,7 +46,7 @@
     min_size: "{{ asg_min_size }}"
     max_size: "{{ asg_max_size }}"
     desired_capacity: "{{ asg_desired_capacity }}"
-    region: "{{ region }}"
+    region: "{{ aws_region }}"
     vpc_zone_identifier: "{{ asg_subnets | join(',') }}"
     health_check_type: EC2
     health_check_period: 300

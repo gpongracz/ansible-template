@@ -6,7 +6,7 @@
 - name: Create ECS task definition
   ecs_taskdefinition:
     profile: "{{ profile }}"
-    region: "{{ region }}"
+    region: "{{ aws_region }}"
     containers:
     - name: "{{ item.container_name }}"
       cpu: "{{ item.cpu }}"

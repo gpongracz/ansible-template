@@ -1,5 +1,4 @@
 ---
-region: "ap-southeast-2"
 
 application_name: "my-app"
 application_ports: [9000]
@@ -7,6 +6,7 @@ application_ports: [9000]
 # AWS Settings
 aws_region: ap-southeast-2
 aws_account_id: 12345
+aws_region: "ap-southeast-2"
 
 # - Toggles parts of this template
 #
