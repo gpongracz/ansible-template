@@ -1,3 +1,5 @@
 .idea
 .vaultpassword
 *.retry
+ansible-template-master
+

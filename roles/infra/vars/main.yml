@@ -4,6 +4,18 @@ region: "ap-southeast-2"
 application_name: "my-app"
 application_port: "9000"
 
+# AWS Settings
+aws_region: ap-southeast-2
+aws_account_id: 12345
+
+# - Toggles parts of this template
+#
+# This enables creation of :
+# * Launch config
+# * ASG
+enable_auto_scaling_group: false
+
+# LC / ASG Configuration
 launch_config_version: "1"
 launch_config_ami: ""
 launch_config_key_name: ""
@@ -16,6 +28,10 @@ asg_min_size: 1
 asg_max_size: 3
 asg_desired_capacity: 1
 asg_subnets: ["","",""]
+# Add additional tags to the ASG
+#        - MyTag: "Some value"
+#          propagate_at_launch: yes
+asg_additional_tags: []
 
 ## This is valid for ECS machines
 # launch_config_user_data: |
@@ -31,3 +47,4 @@ asg_subnets: ["","",""]
 #               - docker pull amazon/amazon-ecs-agent:latest
 
 ecs_cluster_name: {{ application_name }}
+docker_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"

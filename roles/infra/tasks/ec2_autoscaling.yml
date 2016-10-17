@@ -1,0 +1,56 @@
+#
+# This file is part of the ansible-template projet and should not be changed
+#
+---
+# Creates a target security group in which the autoscaled machine will running
+# If the
+- name: Application inbound traffic
+  ec2_group:
+      profile: "{{ profile }}"
+      name: "{{ application_name  }}-app"
+      description: Allows traffic into the application server
+      vpc_id: "{{ vpc_id }}"
+      region: "{{ region }}"
+      rules:
+        - proto: tcp
+          from_port: {{ application_port }}
+          to_port: {{ application_port }}
+          cidr_ip: 0.0.0.0/0
+        - proto: tcp
+          from_port: 22
+          to_port: 22
+          cidr_ip: 0.0.0.0/0
+  register: app_security_group
+  when: {{ enable_auto_scaling_group }}
+
+- name: Launch configuration
+  ec2_lc:
+    profile: "{{ profile }}"
+    name: "{{ application_name }}_{{ launch_config_version }}" # Important, change this if changing anything else or it WILL NOT come into effect.
+    image_id: "{{ launch_config_ami }}"
+    key_name: "{{ launch_config_key_name }}"
+    region: "{{ region }}"
+    security_groups: "{{ [ app_security_group['group_id']] }}"
+    instance_type: "{{ launch_config_instance_size }}"
+    user_data: "{{ launch_config_user_data }}"
+    instance_profile_name: "{{ launch_config_instance_profile_name }}"
+    assign_public_ip: {{ launch_config_assign_public_ip }}
+  register: app_launch_config
+  when: {{ enable_auto_scaling_group }}
+
+
+- name: create autoscaling group
+  ec2_asg:
+    profile: "{{ profile }}"
+    name: "{{ app_name }}"
+    # load_balancers: "{{ app_name }}"
+    launch_config_name: "{{ app_launch_config['name'] }}"
+    min_size: "{{ asg_min_size }}"
+    max_size: "{{ asg_max_size }}"
+    desired_capacity: "{{ asg_desired_capacity }}"
+    region: "{{ region }}"
+    vpc_zone_identifier: "{{ asg_subnets | join(',') }}"
+    health_check_type: EC2
+    health_check_period: 300
+    tags: {{ asg_additional_tags }}
+  when: {{ enable_auto_scaling_group }}
