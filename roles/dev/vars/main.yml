@@ -1,1 +1,2 @@
+aws_profile: "my-dev-aws-account"
 which_env: "this is dev"

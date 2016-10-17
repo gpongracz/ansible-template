@@ -1,1 +1,2 @@
+aws_profile: "my-prod-aws-account"
 which_env: "this is prod"
