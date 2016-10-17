@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
-curl -L -o /tmp/ansible-template-latest.zip https://github.com/simple-machines/ansible-template/archive/master.zip
-unzip /tmp/ansible-template-latest.zip
-rm ansible-template-latest/dev/vars/*
-rm ansible-template-latest/prod/vars/*
-mv ansible-template-latest/* .
+VERSION=master
+rm -Rf ansible-template-$VERSION
+curl -L https://github.com/simple-machines/ansible-template/archive/$VERSION.tar.gz | tar xvf
+rm ansible-template-$VERSION/dev/vars/*
+rm ansible-template-$VERSION/prod/vars/*
+mv ansible-template-$VERSION/* .
+rmdir ansible-template-$VERSION

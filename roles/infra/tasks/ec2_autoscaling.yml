@@ -22,7 +22,6 @@
           to_port: 22
           cidr_ip: 0.0.0.0/0
   register: app_security_group
-  when: {{ enable_auto_scaling_group }}
 
 - name: Launch configuration
   ec2_lc:
@@ -37,8 +36,6 @@
     instance_profile_name: "{{ launch_config_instance_profile_name }}"
     assign_public_ip: {{ launch_config_assign_public_ip }}
   register: app_launch_config
-  when: {{ enable_auto_scaling_group }}
-
 
 - name: create autoscaling group
   ec2_asg:
@@ -54,4 +51,3 @@
     health_check_type: EC2
     health_check_period: 300
     tags: {{ asg_additional_tags }}
-  when: {{ enable_auto_scaling_group }}
