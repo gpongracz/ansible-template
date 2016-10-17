@@ -2,6 +2,7 @@
 # This file is part of the ansible-template projet and should not be changed
 #
 ---
+
 # Creates a target security group in which the autoscaled machine will running
 # If the
 - name: Application inbound traffic

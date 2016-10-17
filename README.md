@@ -1,9 +1,16 @@
 # Getting Started
 
+This template is supposed to live inside a deployable or infrastructure project and can self-update.
+To download and bootstrap a new template instance :
+
+```
+curl -L https://github.com/simple-machines/ansible-template/archive/niels/features-and-update.zip | tar zxv
+echo "12345">.vaultpassword
+```
 
 ## Ansible
 
-Requires ansible 2.1+ 
+Requires ansible 2.1+
 
 Install by executing the following command :
 
@@ -43,12 +50,12 @@ echo "12345">.vaultpassword
 # Directory Structure (aka what goes where)
 
 
-  - `ansible/`: root folder 
+  - `ansible/`: root folder
     - `run-playbook.sh`: script to run deployment. ex `./run-playbook.sh dev.yml`
     - `editvault.sh`: script to change secret variables ex `./editvault.sh dev` modifies the file: `./dev/vars/secret.yml`. This requires `.vaultpassword` to be present.
     - `.vaultpassword`: contains the password to decrypt the vault. Do not commit this file!
     - `dev.yml, prod.yml, test.yml`: orchestrate deployment. **They should only contain information about the environment (profile) and roles to execute**. Example:
-    
+
         ```
         - hosts: localhost
           gather_facts: yes
@@ -59,7 +66,7 @@ echo "12345">.vaultpassword
             - infra
         ```
     - `dev/, prod/, test/, etc`: directory that contain environment specific **variables**
-        - `tasks/main.yml`: File that should be edited to *only* include other variable files. 
+        - `tasks/main.yml`: File that should be edited to *only* include other variable files.
         - `vars/`: folder containing variables specific to the environment
             - `secret.yml`: encrypted variables (through `editvault.sh`)
             - `main.yml`: main variables
@@ -67,6 +74,5 @@ echo "12345">.vaultpassword
     - `infra/`: directory that includes all the tasks. Could be seen as a "common" directory
         - `vars/`: define variables that are common. Can refer to your specfic
         - `tasks/`: tasks that will be executed by ansible
-            - `main.yml`: main file. references variables as defined in `vars` and then references other tasks in the same subfolder. 
-            - `foo.yml`: create as many as you want, but make sure to include them in your `main.yml` file. 
-
+            - `main.yml`: main file. references variables as defined in `vars` and then references other tasks in the same subfolder.
+            - `foo.yml`: create as many as you want, but make sure to include them in your `main.yml` file.
