@@ -5,6 +5,7 @@
 
 # AWS Global settings
 aws_region: ap-southeast-2
+
 # Launch config related
 # http://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html
 launch_config_amis_per_region:
@@ -17,8 +18,25 @@ launch_config_amis_per_region:
   ap-southeast-1:	"ami-438b2f20"
   ap-southeast-2:	"ami-862211e5"
 launch_config_instance_size: "t2.small"
+
 # ASG Related
 create_auto_scaling_group: false
 asg_additional_tags: []
 asg_subnets: []
+
+
 # ECS related
+
+# Application port, used by
+# - Security groups
+# - ELB eventually
+application_port: 9000
+application_security_group_default_open_ports:
+  - port: " {{ application_port }}"
+    from: "0.0.0.0/0"
+  - port: 22
+    from: "0.0.0.0/0"
+# The application port and ssh are opened by default, any additional ports can be configured in this list and will be merged.
+application_security_group_addiontal_open_ports: []
+# this is is resulting effective group
+application_security_group_open_ports: "{{ application_security_group_default_open_ports + application_security_group_addiontal_open_ports }}"

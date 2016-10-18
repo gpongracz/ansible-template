@@ -9,6 +9,21 @@
 
 - debug: msg="Using ECS AMI {{ launch_config_ami }}"
 
+- name: Create inboud traffic rules
+  set_fact:
+    proto: tcp
+    from_port: "{{ item.port | int }}"
+    to_port: "{{ item.port | int }}"
+    cidr_ip: "{{ item.from }}"
+  with_items: "{{ application_security_group_open_ports }}"
+  register: _app_security_group_rules_output
+
+- name: Flatten inboud traffic rules
+  set_fact:
+    _app_security_group_rules: "{{ _app_security_group_rules_output.results | list | map(attribute='ansible_facts') | list }}"
+
+- debug: msg="Using application security group rules {{ _app_security_group_rules }}"
+
 # Creates a target security group in which the autoscaled machine will running
 # If the
 - name: Application inbound traffic
@@ -16,16 +31,7 @@
       name: "{{ application_name  }}-app"
       description: Allows traffic into the application server
       vpc_id: "{{ vpc_id }}"
-      region: "{{ aws_region }}"
-      rules:
-        - proto: tcp
-          from_port: "{{ application_port }}"
-          to_port: "{{ application_port }}"
-          cidr_ip: 0.0.0.0/0
-        - proto: tcp
-          from_port: 22
-          to_port: 22
-          cidr_ip: 0.0.0.0/0
+      rules: "{{ _app_security_group_rules }}"
   register: app_security_group
 
 - name: Determine launch config hash
