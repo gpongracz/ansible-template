@@ -36,7 +36,7 @@
 
 - name: Determine launch config hash
   set_fact:
-    launch_config_version: "{{ launch_config_params | hash('sha1') }}"
+    _launch_config_version: "{{ launch_config_params | to_json | hash('sha1') }}"
   vars:
     launch_config_params:
       name: "{{ application_name }}"
@@ -51,7 +51,7 @@
 
 - name: Launch configuration
   ec2_lc:
-    name: "{{ application_name }}_{{ launch_config_version }}" # Important, change this if changing anything else or it WILL NOT come into effect.
+    name: "{{ application_name }}_{{ _launch_config_version }}"
     image_id: "{{ launch_config_ami }}"
     key_name: "{{ launch_config_key_name }}"
     region: "{{ aws_region }}"
@@ -64,7 +64,7 @@
 
 - name: create autoscaling group
   ec2_asg:
-    name: "{{ app_name }}"
+    name: "{{ application_name }}"
     # load_balancers: "{{ app_name }}"
     launch_config_name: "{{ app_launch_config['name'] }}"
     min_size: "{{ asg_min_size }}"

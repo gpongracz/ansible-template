@@ -18,12 +18,17 @@ launch_config_amis_per_region:
   ap-southeast-1:	"ami-438b2f20"
   ap-southeast-2:	"ami-862211e5"
 launch_config_instance_size: "t2.small"
+launch_config_instance_profile_name: null
+launch_config_user_data: ""
+launch_config_assign_public_ip: false
 
 # ASG Related
 create_auto_scaling_group: false
 asg_additional_tags: []
 asg_subnets: []
-
+asg_min_size: 1
+asg_max_size: 3
+asg_desired_capacity: 1
 
 # ECS related
 
