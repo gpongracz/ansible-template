@@ -3,6 +3,12 @@
 #
 ---
 
+- name: Determine ECS ami
+  set_fact:
+    launch_config_ami: "{{launch_config_ami | default(launch_config_amis_per_region[aws_region])}}"
+
+- debug: msg="Using ECS AMI {{ launch_config_ami }}"
+
 # Creates a target security group in which the autoscaled machine will running
 # If the
 - name: Application inbound traffic
@@ -21,6 +27,21 @@
           to_port: 22
           cidr_ip: 0.0.0.0/0
   register: app_security_group
+
+- name: Determine launch config hash
+  set_fact:
+    launch_config_version: "{{ launch_config_params | hash('sha1') }}"
+  vars:
+    launch_config_params:
+      name: "{{ application_name }}"
+      image_id: "{{ launch_config_ami }}"
+      key_name: "{{ launch_config_key_name }}"
+      region: "{{ aws_region }}"
+      security_groups: "{{ [ app_security_group['group_id']] }}"
+      instance_type: "{{ launch_config_instance_size }}"
+      user_data: "{{ launch_config_user_data }}"
+      instance_profile_name: "{{ launch_config_instance_profile_name }}"
+      assign_public_ip: "{{ launch_config_assign_public_ip }}"
 
 - name: Launch configuration
   ec2_lc:

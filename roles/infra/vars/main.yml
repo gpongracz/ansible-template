@@ -1,25 +1,19 @@
 ---
 
-application_name: "my-app"
-application_ports: [9000]
+# application_name: ""my-app""
+# application_ports: [9000]
 
 # AWS Settings
-aws_region: ap-southeast-2
 aws_account_id: 12345
-aws_region: "ap-southeast-2"
 
 # - Toggles parts of this template
 #
 # This enables creation of :
 # * Launch config
 # * ASG
-enable_auto_scaling_group: false
 
 # LC / ASG Configuration
-launch_config_version: "1"
-launch_config_ami: ""
 launch_config_key_name: ""
-launch_config_instance_size: "t2.small"
 launch_config_user_data: ""
 launch_config_instance_profile_name: ""
 launch_config_assign_public_ip: false

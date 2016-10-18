@@ -3,10 +3,15 @@
 #
 ---
 
+# This is done via a set-facts rather then a include_vars because the template update only update tasks, not vars.
+# Adding a defaults.yml makes the tasks/vars split more difficult to understand
+- include: set_defaults.yml
+
+# This is where we include the override, anything from set_default can be overridden here
 - include_vars: main.yml
 
 - include: ec2_autoscaling.yml
-  when: "{{ enable_auto_scaling_group }}"
+  when: "{{ create_auto_scaling_group }}"
 
 - include: ecs_cluster.yml
 
