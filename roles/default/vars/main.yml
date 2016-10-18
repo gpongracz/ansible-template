@@ -26,6 +26,7 @@ asg_additional_tags: []
 
 
 # ECS related
+ecs_cluster_name: "{{ application_name }}"
 default_docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"
 
 # Application port, used by

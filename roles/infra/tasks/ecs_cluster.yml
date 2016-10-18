@@ -5,6 +5,6 @@
 
 - name: Create ECS cluster
   ecs_cluster:
-    name: "{{ ecs_cluster_name }}" # doesn't use default but instead sets the fact so other tasks can resuse
+    name: "{{ ecs_cluster_name }}"
     state: present
     region: "{{ aws_region }}"

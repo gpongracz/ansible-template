@@ -9,6 +9,10 @@
 # This applies any defaults after reading all vars
 - include: set_defaults.yml
 
+# Avoid running on vanilla config, apologies for whoever wants to actually create an environment called my-app.
+- fail: msg="Failing to continue with default application name"
+  when: application_name == 'my-app'
+
 - include: ec2_autoscaling.yml
   when: "{{ create_auto_scaling_group }}"
 
