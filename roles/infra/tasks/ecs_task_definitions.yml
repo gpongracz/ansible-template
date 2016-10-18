@@ -4,18 +4,17 @@
 ---
 
 # Example use:
-# - name: Set default
-#   set_fact:
-#     ecs_services:
-#       - name: some-service
-#         # container_name: some_name (optional)
-#         cpu: 1000 # TODO Set from instance type if possible
-#         memory: 1000
-#         image: postgres
-- name: Generate defaults for task defintions
-  set_fact:
-    default_docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"
+# ecs_services:
+#   - name: some-service
+#     tasks:
+#       # container_name: some_name (optional)
+#       #cpu: 1000 # (optional) - default to percentage of number of tasks and resources per instance type
+#       #memory: 1000
+#       #image: postgres # (optional) - defaults to application_name
 
+# Todo :
+# - Add percentage allocations for cpu/mem
+#
 
 - name: Create ECS task definitions
   ecs_taskdefinition:
