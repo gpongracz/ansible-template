@@ -6,6 +6,9 @@
 # This is where we include the override, anything from set_default can be overridden here
 - include_vars: main.yml
 
+# This applies any defaults after reading all vars
+- include: set_defaults.yml
+
 - include: ec2_autoscaling.yml
   when: "{{ create_auto_scaling_group }}"
 

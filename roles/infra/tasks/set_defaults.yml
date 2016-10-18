@@ -1,0 +1,9 @@
+#
+# This file is part of the ansible-template projet and should not be changed
+#
+---
+
+- name: Set ecs_cluster_name
+  set_fact:
+    ecs_cluster_name: "{{ application_name }}"
+  when: "{{ ecs_cluster_name is not defined }}"
