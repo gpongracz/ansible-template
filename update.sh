@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 set -e
-VERSION=master
-rm -Rf ansible-template-$VERSION
-curl -L https://github.com/simple-machines/ansible-template/archive/$VERSION.tar.gz | tar xz
-rm ansible-template-$VERSION/roles/dev/vars/*
-rm ansible-template-$VERSION/roles/prod/vars/*
-rsync -ra ansible-template-$VERSION/* .
-rm -Rf ansible-template-$VERSION
+if [ -z "$1" ]
+  then
+    echo "Updating from $1"
+  else
+    echo "Updating from github"
+    VERSION=master
+    rm -Rf ansible-template-$VERSION
+    curl -L https://github.com/simple-machines/ansible-template/archive/$VERSION.tar.gz | tar xz
+    UPDATE_FROM="ansible-template-$VERSION"
+fi
+
+rsync --exclude 'roles/dev/vars' --exclude 'roles/prod/vars' -ra ansible-template-$VERSION/* .

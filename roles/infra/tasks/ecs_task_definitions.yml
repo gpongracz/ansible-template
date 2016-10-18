@@ -12,6 +12,9 @@
 #         cpu: 1000 # TODO Set from instance type if possible
 #         memory: 1000
 #         image: postgres
+- name: Generate defaults for task defintions
+  set_fact:
+    default_docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"
 
 
 - name: Create ECS task definitions
@@ -21,7 +24,7 @@
     - name: "{{ item.container_name | default(item.name) }}" # Default container name to service name if no name set
       cpu: "{{ item.cpu | int }}"
       essential: "{{ item.essential | default(true)}}"
-      image:  "{{ item.image }}" # {{ docker_repo }}/{{ app_name }}:{{docker_tag}}
+      image:  "{{ docker_image_repo | default(default_docker_image_repo) }}/{{ docker_image_tag | default(application_name) }}:{{ docker_image_tag | default('latest') }}"
       memory: "{{ item.memory | int }}"
       environment: "{{ item.environment | default([])}}"
       portMappings: "{{ item.portMappings | default([])}}"

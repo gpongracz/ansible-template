@@ -8,5 +8,6 @@
   environment:
     AWS_PROFILE: "{{ aws_profile }}"
   roles:
+    - default
     - prod
     - infra

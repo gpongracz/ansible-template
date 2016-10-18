@@ -1,10 +1,13 @@
 ---
 
-# application_name: ""my-app""
+# Most components will use a derived value from the application_name, changing this will most likely rebuild the entire stack.
+application_name: "my-app"
+
+aws_account_id: 12345
+
 # application_ports: [9000]
 
 # AWS Settings
-aws_account_id: 12345
 
 # - Toggles parts of this template
 #
@@ -18,14 +21,9 @@ launch_config_user_data: ""
 launch_config_instance_profile_name: ""
 launch_config_assign_public_ip: false
 
-asg_min_size: 1
-asg_max_size: 3
-asg_desired_capacity: 1
-asg_subnets: ["","",""]
 # Add additional tags to the ASG
 #        - MyTag: "Some value"
 #          propagate_at_launch: yes
-asg_additional_tags: []
 
 ## This is valid for ECS machines
 # launch_config_user_data: |
@@ -40,5 +38,4 @@ asg_additional_tags: []
 #             bootcmd:
 #               - docker pull amazon/amazon-ecs-agent:latest
 
-ecs_cluster_name: "{{ application_name }}"
 docker_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"

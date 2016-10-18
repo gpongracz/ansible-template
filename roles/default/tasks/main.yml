@@ -4,6 +4,3 @@
 ---
 
 - include_vars: main.yml
-
-# TODO : We need this file to be optional
-- include_vars: "secret.yml"
