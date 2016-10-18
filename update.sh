@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -e
-if [ -z "$1" ]
+if [ ! -z "$1" ]
   then
     echo "Updating from $1"
+    UPDATE_FROM=$1
   else
     echo "Updating from github"
     VERSION=master
@@ -11,4 +12,4 @@ if [ -z "$1" ]
     UPDATE_FROM="ansible-template-$VERSION"
 fi
 
-rsync --exclude 'roles/dev/vars' --exclude 'roles/prod/vars' -ra ansible-template-$VERSION/* .
+rsync --exclude 'roles/dev/vars' --exclude 'roles/prod/vars' --exclude 'roles/infra/vars' -rav $UPDATE_FROM/* .
