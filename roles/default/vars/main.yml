@@ -29,6 +29,12 @@ asg_subnets: []
 asg_min_size: 1
 asg_max_size: 3
 asg_desired_capacity: 1
+asg_additional_tags: []
+# This allows additional tags to be set on created instances
+# asg_additional_tags: []
+#  - Environment: "{{ environment }}"
+#    propagate_at_launch: yes
+
 
 # ECS related
 

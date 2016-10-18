@@ -34,12 +34,10 @@
       rules: "{{ _app_security_group_rules }}"
   register: app_security_group
 
-- name: Determine launch config hash
+- name: Set launch config params fact
   set_fact:
-    _launch_config_version: "{{ launch_config_params | to_json | hash('sha1') }}"
-  vars:
-    launch_config_params:
-      name: "{{ application_name }}"
+    _launch_config_params:
+      name: "{{ application_name }}" # this is used for the hash, the actual LC will have a differnet name ( see _launch_config_name )
       image_id: "{{ launch_config_ami }}"
       key_name: "{{ launch_config_key_name }}"
       region: "{{ aws_region }}"
@@ -49,17 +47,16 @@
       instance_profile_name: "{{ launch_config_instance_profile_name }}"
       assign_public_ip: "{{ launch_config_assign_public_ip }}"
 
+- name: Set launch config hash fact
+  set_fact:
+    _launch_config_params_hash: "{{ _launch_config_params | to_json | hash('sha1') }}"
+
+- name: Set launch config name fact
+  set_fact:
+    _launch_config_name: "{{ application_name }}_{{ _launch_config_params_hash }}"
+
 - name: Launch configuration
-  ec2_lc:
-    name: "{{ application_name }}_{{ _launch_config_version }}"
-    image_id: "{{ launch_config_ami }}"
-    key_name: "{{ launch_config_key_name }}"
-    region: "{{ aws_region }}"
-    security_groups: "{{ [ app_security_group['group_id']] }}"
-    instance_type: "{{ launch_config_instance_size }}"
-    user_data: "{{ launch_config_user_data }}"
-    instance_profile_name: "{{ launch_config_instance_profile_name }}"
-    assign_public_ip: "{{ launch_config_assign_public_ip }}"
+  ec2_lc: "{{ _launch_config_params | combine({'name': _launch_config_name }) }}"
   register: app_launch_config
 
 - name: create autoscaling group
