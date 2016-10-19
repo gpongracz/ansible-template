@@ -6,7 +6,8 @@ To download and bootstrap a new template instance :
 ```
 curl -L https://github.com/simple-machines/ansible-template/archive/master.tar.gz | tar zxv
 mv ansible-template-master ansible
-echo "12345">.vaultpassword
+cd ansible
+echo "12345" > .vaultpassword
 ansible-vault create --vault-password-file .vaultpassword roles/dev/vars/secret.yml
 ansible-vault create --vault-password-file .vaultpassword roles/prod/vars/secret.yml
 ```
