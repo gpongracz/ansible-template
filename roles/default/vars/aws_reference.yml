@@ -16,8 +16,11 @@ launch_config_amis_per_region:
   ap-southeast-2:	"ami-862211e5"
 
 
+
 # This maps the available resources per instance type. used to auto assign resources to ecs tasks
 ecs_resources_per_instance_type:
   t2.small:
     cpu: 1024
     memory: 2003
+
+resources_for_instance_type: "{{ ecs_resources_per_instance_type[launch_config_instance_size] }}"

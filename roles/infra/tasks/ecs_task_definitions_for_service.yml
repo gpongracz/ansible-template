@@ -1,0 +1,49 @@
+#
+# This file is part of the ansible-template projet and should not be changed
+#
+---
+
+- debug: msg="Creating task definitions for service {{ service }}"
+
+# - name: Clear container list
+#   set_fact:
+#     container_list: []
+
+- name: Build container
+  set_fact:
+      name: "{{ item.container_name | default(item.name) }}" # Default container name to service name if no name set
+      # 1. hardcoded cpu value
+      # 2. cpu percentage applied to instance type resources ( TODO )
+      cpu: "{{ item.cpu | int }}"
+      essential: "{{ item.essential | default(true)}}"
+      image:  "{{ docker_image_repo | default(default_docker_image_repo) }}/{{ docker_image_tag | default(application_name) }}:{{ docker_image_tag | default('latest') }}"
+      memory: "{{ item.memory | int }}"
+      environment: "{{ item.environment | default([])}}"
+      portMappings: "{{ item.portMappings | default([])}}"
+      links: "{{ item.links | default([])}}"
+  register: _build_container_output
+  with_items: "{{ service.task.containers }}"
+
+- name: Flatten build container results
+  set_fact:
+    _containers: "{{ _build_container_output.results | map(attribute='ansible_facts') | list }}"
+
+- debug: msg="Fact _containers now is {{ _containers  }}"
+
+- name: Create individual task definitions
+  ecs_taskdefinition:
+    containers: "{{ _containers }}"
+    state: present
+    family: "{{ service.name }}"
+  register: "_created_task_definition"
+
+- name: Add to registered containers
+  set_fact:
+    _created_task_arn: "{{ _created_task_definition.taskdefinition.taskDefinitionArn }}"
+    #_created_task_definition: "{{ _created_task_definition | combine({'service' : service})}}"
+
+- debug: msg="Created task definition {{ _created_task_arn }}"
+
+- name: Store created task def in service
+  set_fact:
+    _service_with_task_arns: "{{ _service_with_task_arns + [ service | combine({'task': { 'taskDefinitionArn' : _created_task_arn }}, recursive=True ) ] }}"

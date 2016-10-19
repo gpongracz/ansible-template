@@ -5,15 +5,14 @@
 
 - name: Create ECS Service
   ecs_service:
-    region: "{{ aws_region }}"
-    name: "{{ application_name }}"
+    name: "{{ item.name }}"
     cluster: "{{ ecs_cluster_name }}"
-    task_definition: "{{ ecs_task_definition }}" # "{{ ecs_task_name }}:{{ ecs_task['taskdefinition']['revision'] }}"
+    task_definition: "{{ item.task.taskDefinitionArn }}" # "{{ ecs_task_name }}:{{ ecs_task['taskdefinition']['revision'] }}"
     state: present
     desired_count: 1
-    role: "ecsServiceRole"
+    #role: "ecsServiceRole"
     #load_balancers: " {{ ecs_service_loadbalancers }}"
       # - loadBalancerName: "{{ app_name }}"
       #   containerName: "{{ app_name }}"
       #   containerPort: 9000
-  with_items: "{{ ecs_task_definitions_output }}"
+  with_items: "{{ _service_with_task_arns }}"

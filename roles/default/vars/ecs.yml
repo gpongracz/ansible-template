@@ -1,0 +1,31 @@
+#
+# This file is part of the ansible-template projet and should not be changed
+#
+---
+
+# ECS related
+ecs_cluster_name: "{{ application_name }}"
+
+# Defaults to a sane location on the region's ECR
+default_docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"
+
+# Example use:
+#
+# ecs_services:
+#   - name: some-service
+#     task:
+#       containers:
+#           name: foo
+#           # container_name: some_name (optional)
+#           #cpu: 1000 # (optional) - default to percentage of number of tasks and resources per instance type
+#           #memory: 1000
+#           #image: postgres # (optional) - defaults to application_name
+#
+# This defaults to a single service with a single container
+ecs_services:
+  - name: "{{ application_name }}"
+    task: # A service always has a single task, which is mapped here.
+      containers: # A task can have multiple containers
+      - name: "{{ application_name }}"
+        cpu: "{{ resources_for_instance_type.cpu }}"
+        memory: "{{ resources_for_instance_type.memory }}"

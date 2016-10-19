@@ -6,3 +6,5 @@
 - include_vars: main.yml
 
 - include_vars: aws_reference.yml
+
+- include_vars: ecs.yml

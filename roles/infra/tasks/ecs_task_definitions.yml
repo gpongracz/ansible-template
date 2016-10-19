@@ -3,39 +3,22 @@
 #
 ---
 
-# Example use:
-# ecs_services:
-#   - name: some-service
-#     tasks:
-#       # container_name: some_name (optional)
-#       #cpu: 1000 # (optional) - default to percentage of number of tasks and resources per instance type
-#       #memory: 1000
-#       #image: postgres # (optional) - defaults to application_name
-
-# Todo :
-# - Add percentage allocations for cpu/mem
-#
-
-- name: Create ECS task definitions
-  ecs_taskdefinition:
-    region: "{{ aws_region }}"
-    containers:
-    - name: "{{ item.container_name | default(item.name) }}" # Default container name to service name if no name set
-      cpu: "{{ item.cpu | int }}"
-      essential: "{{ item.essential | default(true)}}"
-      image:  "{{ docker_image_repo | default(default_docker_image_repo) }}/{{ docker_image_tag | default(application_name) }}:{{ docker_image_tag | default('latest') }}"
-      memory: "{{ item.memory | int }}"
-      environment: "{{ item.environment | default([])}}"
-      portMappings: "{{ item.portMappings | default([])}}"
-      links: "{{ item.links | default([])}}"
-    state: present
-    family: "{{ item.name }}"
-  register: "ecs_task_definitions_output"
-  with_items: "{{ ecs_services|default([])}}"
-
-- name: Ensure ecs_task_definitions_output is valid
+- name: Create resulting task defintion dict
   set_fact:
-    ecs_task_definitions_output: []
-  when: "{{ ecs_task_definitions_output.skipped is defined }}"
+    _service_with_task_arns: []
 
-- debug: msg="ecs_task_definitions_output now is {{ ecs_task_definitions_output }}"
+- name: Create task definitions defined in services
+  include: ecs_task_definitions_for_service.yml service={{ outer }}
+  with_items: "{{ ecs_services }}"
+  loop_control:
+    loop_var: outer
+
+
+- debug: msg="Fact _service_with_task_arns now is {{ _service_with_task_arns }}"
+
+# - name: Ensure ecs_task_definitions_output is valid
+#   set_fact:
+#     ecs_task_definitions_output: []
+#   when: "{{ ecs_task_definitions_output.skipped is defined }}"
+#
+# - debug: msg="ecs_task_definitions_output now is {{ ecs_task_definitions_output }}"
