@@ -14,10 +14,11 @@
       name: "{{ item.container_name | default(item.name) }}" # Default container name to service name if no name set
       # 1. hardcoded cpu value
       # 2. cpu percentage applied to instance type resources ( TODO )
-      cpu: "{{ item.cpu | int }}"
+      # Variables don't currently work here; see https://github.com/ansible/ansible-modules-extras/pull/3284
+      cpu: 500 # '{{ item.cpu | int }}'
       essential: "{{ item.essential | default(true)}}"
       image:  "{{ docker_image_repo | default(default_docker_image_repo) }}/{{ docker_image_tag | default(application_name) }}:{{ docker_image_tag | default('latest') }}"
-      memory: "{{ item.memory | int }}"
+      memory: 2000 # "{{ item.memory | int }}"
       environment: "{{ item.environment | default([])}}"
       portMappings: "{{ item.portMappings | default([])}}"
       links: "{{ item.links | default([])}}"
