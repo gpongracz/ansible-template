@@ -14,17 +14,6 @@ create_auto_scaling_group: False
 # In order to do anything with ECS, we need a instnance role that has the required IAM privileges.
 launch_config_instance_profile_name: "ecs"
 
-#
-asg_additional_tags:
-  - CostCentre: "CMO"
-    propagate_at_launch: yes
-  - Environment: "{{ environment_name }}"
-    propagate_at_launch: yes
-  - Name: "{{ application_name }}"
-    propagate_at_launch: yes
-  - OwnerDescription: "Owner=datascience"
-    propagate_at_launch: yes
-  - Service: "{{ application_name }}"
-    propagate_at_launch: yes
-  - Schedule: "24x7"
-    propagate_at_launch: yes
+# ecs_cluster_name normally defaults to the application_name, If you want a component that joins an existing cluster :
+#ecs_cluster_name: "datascience-common"
+#create_auto_scaling_group: False
