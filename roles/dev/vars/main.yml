@@ -1,3 +1,10 @@
 aws_profile: "my-dev-aws-account"
 aws_account_id: 12345
 which_env: "this is dev"
+
+
+### Task definitions specific. 
+### Optional values, uncomment to override, default values are shown below (see default/vars/main.yml for more info)
+#docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"
+#docker_image_name: "{{ application_name }}"
+#docker_image_tag: "latest"
