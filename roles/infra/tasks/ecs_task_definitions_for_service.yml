@@ -16,7 +16,7 @@
       # 2. cpu percentage applied to instance type resources ( TODO )
       cpu: "{{ item.cpu | int }}"
       essential: "{{ item.essential | default(true)}}"
-      image:  "{{ docker_image_repo | default(default_docker_image_repo) }}/{{ docker_image_tag | default(application_name) }}:{{ docker_image_tag | default('latest') }}"
+      image:  "{{ docker_image_repo | default(default_docker_image_repo) }}/{{ docker_image_name | default(application_name) }}:{{ docker_image_tag | default('latest') }}"
       memory: "{{ item.memory | int }}"
       environment: "{{ item.environment | default([])}}"
       portMappings: "{{ item.portMappings | default([])}}"
