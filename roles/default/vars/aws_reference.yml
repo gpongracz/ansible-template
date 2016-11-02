@@ -6,14 +6,14 @@
 # Launch config related
 # http://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html
 launch_config_amis_per_region:
-  us-east-1: "ami-40286957"
-  us-west-1: "ami-20fab440"
-  us-west-2: "ami-562cf236"
-  eu-west-1: "ami-175f1964"
-  eu-central-1:	"ami-c55ea2aa"
-  ap-northeast-1:	"ami-010ed160"
-  ap-southeast-1:	"ami-438b2f20"
-  ap-southeast-2:	"ami-862211e5"
+  ap-southeast-2:   "ami-862211e5"
+  ap-southeast-1:   "ami-438b2f20"
+  ap-northeast-1:   "ami-010ed160"
+  eu-central-1:     "ami-c55ea2aa"
+  us-east-1:        "ami-40286957"
+  us-west-1:        "ami-20fab440"
+  us-west-2:        "ami-562cf236"
+  eu-west-1:        "ami-175f1964"
 
 
 
