@@ -23,6 +23,10 @@ asg_additional_tags: []
 #  - Environment: "{{ environment }}"
 #    propagate_at_launch: yes
 
+# ELB related
+create_elb: false
+
+
 
 # Application port, used by
 # - Security groups

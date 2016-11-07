@@ -87,12 +87,11 @@
 - name: create autoscaling group
   ec2_asg:
     name: "{{ application_name }}"
-    # load_balancers: "{{ app_name }}"
+    load_balancers: "{{ application_name if create_elb else omit }}"
     launch_config_name: "{{ app_launch_config['name'] }}"
     min_size: "{{ asg_min_size }}"
     max_size: "{{ asg_max_size }}"
     desired_capacity: "{{ asg_properties_desired_capacity | default(asg_desired_capacity) }}"
-    region: "{{ aws_region }}"
     vpc_zone_identifier: "{{ asg_subnets | join(',') }}"
     health_check_type: EC2
     health_check_period: 300
