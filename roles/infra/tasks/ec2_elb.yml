@@ -51,16 +51,16 @@
     state: present
     subnets: "{{ elb_subnets | join(',') }}"
     security_group_names: "['{{ application_name }}-elb']"
-    connection_draining_timeout: 60
+    connection_draining_timeout: "{{ elb_connection_draining_timeout }}"
     listeners: "{{ _elb_listeners }}"
     health_check:
         ping_protocol: http # options are http, https, ssl, tcp
         ping_port: "{{ application_port }}"
-        ping_path: "/" # not required for tcp or ssl
-        response_timeout: 5 # seconds
-        interval: 15 # seconds
-        unhealthy_threshold: 6
-        healthy_threshold: 2
+        ping_path: "{{ elb_health_check_ping_path }}" # not required for tcp or ssl
+        response_timeout: "{{ elb_health_check_response_timeout }}" # seconds
+        interval: "{{ elb_health_check_interval }}" # seconds
+        unhealthy_threshold: "{{ elb_health_check_unhealthy_threshold }}"
+        healthy_threshold: "{{ elb_health_check_healthy_threshold }}"
     tags:
       Name: "{{ application_name }}-cache"
   register: load_balancer
