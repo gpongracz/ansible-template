@@ -1,5 +1,5 @@
 #
-# This file is part of the ansible-template projet and should not be changed
+# This file is part of the ansible-template project and should not be changed
 #
 ---
 
@@ -75,6 +75,15 @@
   ec2_lc: "{{ _launch_config_params | combine({'name': _launch_config_name }) }}"
   register: app_launch_config
 
+- name: Retrieve current Auto Scaling Group properties
+  command: "aws --region {{ aws_region }} autoscaling describe-auto-scaling-groups --auto-scaling-group-names {{ application_name }}"
+  register: asg_properties_result
+
+- name: Set asg_properties variable from JSON output if the Auto Scaling Group already exists
+  set_fact:
+    asg_properties_desired_capacity: "{{ (asg_properties_result.stdout | from_json).AutoScalingGroups[0].DesiredCapacity }}"
+  when: (asg_properties_result.stdout | from_json).AutoScalingGroups | count
+
 - name: create autoscaling group
   ec2_asg:
     name: "{{ application_name }}"
@@ -82,7 +91,7 @@
     launch_config_name: "{{ app_launch_config['name'] }}"
     min_size: "{{ asg_min_size }}"
     max_size: "{{ asg_max_size }}"
-    desired_capacity: "{{ asg_desired_capacity }}"
+    desired_capacity: "{{ asg_properties_desired_capacity | default(asg_desired_capacity) }}"
     region: "{{ aws_region }}"
     vpc_zone_identifier: "{{ asg_subnets | join(',') }}"
     health_check_type: EC2

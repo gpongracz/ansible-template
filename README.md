@@ -6,7 +6,8 @@ To download and bootstrap a new template instance :
 ```
 curl -L https://github.com/simple-machines/ansible-template/archive/master.tar.gz | tar zxv
 mv ansible-template-master ansible
-echo "12345">.vaultpassword
+cd ansible
+echo "12345" > .vaultpassword
 ansible-vault create --vault-password-file .vaultpassword roles/dev/vars/secret.yml
 ansible-vault create --vault-password-file .vaultpassword roles/prod/vars/secret.yml
 ```
@@ -75,7 +76,7 @@ echo "12345">.vaultpassword
             - `main.yml`: main variables
             - `foo.yml`: create as many as you want, but make sure to include them in your `tasks/main.yml`
     - `infra/`: directory that includes all the tasks. Could be seen as a "common" directory
-        - `vars/`: define variables that are common. Can refer to your specfic
+        - `vars/`: define variables that are common. Can refer to your specific
         - `tasks/`: tasks that will be executed by ansible
             - `main.yml`: main file. references variables as defined in `vars` and then references other tasks in the same subfolder.
             - `foo.yml`: create as many as you want, but make sure to include them in your `main.yml` file.

@@ -1,5 +1,5 @@
 #
-# This file is part of the ansible-template projet and should not be changed
+# This file is part of the ansible-template project and should not be changed
 #
 ---
 
@@ -17,8 +17,8 @@
       # Variables don't currently work here; see https://github.com/ansible/ansible-modules-extras/pull/3284
       cpu: 500 # '{{ item.cpu | int }}'
       essential: "{{ item.essential | default(true)}}"
-      image:  "{{ docker_image_repo | default(default_docker_image_repo) }}/{{ docker_image_tag | default(application_name) }}:{{ docker_image_tag | default('latest') }}"
-      memory: 2000 # "{{ item.memory | int }}"
+      image:  "{{ docker_image_repo | default(default_docker_image_repo) }}/{{ docker_image_name | default(application_name) }}:{{ docker_image_tag | default('latest') }}"
+      memory: "{{ item.memory | int }}"
       environment: "{{ item.environment | default([])}}"
       portMappings: "{{ item.portMappings | default([])}}"
       links: "{{ item.links | default([])}}"
