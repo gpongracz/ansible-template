@@ -9,10 +9,10 @@ application_name: "my-app"
 #     from: "0.0.0.0/0"
 
 # Enabling this triggers the creation of launch configs etc
-create_auto_scaling_group: False
+create_auto_scaling_group: false
 
 # Enabling this triggers the creation of an elastic load balancer
-create_elb: False
+create_elb: false
 
 # In order to do anything with ECS, we need a instnance role that has the required IAM privileges.
 launch_config_instance_profile_name: "ecs"
