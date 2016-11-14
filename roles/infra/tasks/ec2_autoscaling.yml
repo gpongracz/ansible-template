@@ -25,11 +25,13 @@
 
 - debug: msg="Using ECS AMI {{ launch_config_ami }}"
 
+- debug: msg="Creating inbound security group opening ports {{ application_security_group_open_ports }}"
+
 - name: Create inboud traffic rules
   set_fact:
     proto: tcp
-    from_port: "{{ item.port | int }}"
-    to_port: "{{ item.port | int }}"
+    from_port: "{{ item.port }}"
+    to_port: "{{ item.port }}"
     cidr_ip: "{{ item.from }}"
   with_items: "{{ application_security_group_open_ports }}"
   register: _app_security_group_rules_output

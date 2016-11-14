@@ -41,3 +41,14 @@ application_security_group_default_open_ports:
 application_security_group_addiontal_open_ports: []
 # this is is resulting effective group
 application_security_group_open_ports: "{{ application_security_group_default_open_ports + application_security_group_addiontal_open_ports }}"
+
+
+# ECS Related
+# Usage :
+# ecs_environment_variables:
+#   - name: "MY_ENV_VAR"
+#     value: "{{ my_variable }}"
+#   - name: "MY_SECOND_VAR"
+#     value: "hardcoded"
+
+ecs_environment_variables: "{{ [] }"
