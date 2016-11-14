@@ -11,9 +11,8 @@ application_name: "my-app"
 # Enabling this triggers the creation of launch configs etc
 create_auto_scaling_group: False
 
+# Enabling this triggers the creation of an elastic load balancer
+create_elb: False
+
 # In order to do anything with ECS, we need a instnance role that has the required IAM privileges.
 launch_config_instance_profile_name: "ecs"
-
-# ecs_cluster_name normally defaults to the application_name, If you want a component that joins an existing cluster :
-#ecs_cluster_name: "datascience-common"
-#create_auto_scaling_group: False

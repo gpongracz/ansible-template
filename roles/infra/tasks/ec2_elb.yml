@@ -1,0 +1,66 @@
+---
+
+- name: Create ELB inbound traffic rules
+  set_fact:
+    proto: tcp
+    from_port: "{{ 443 if elb_secure_https else 80 }}"
+    to_port: "{{ 443 if elb_secure_https else 80 }}"
+    cidr_ip: "{{ item }}"
+  with_items: "{{ elb_inbound_ips }}"
+  register: _elb_security_group_rules_output
+
+- name: Flatten ELB inbound traffic rules
+  set_fact:
+    _elb_security_group_rules: "{{ _elb_security_group_rules_output.results | list | map(attribute='ansible_facts') | list }}"
+
+- debug: msg="Using elb security group rules {{ _elb_security_group_rules }}"
+
+- name: ELB security inbound traffic
+  ec2_group:
+    name: "{{ application_name  }}-elb"
+    description:  Allows traffic into the load balancer
+    vpc_id: "{{ vpc_id }}"
+    rules: "{{ _elb_security_group_rules }}"
+  register: elb_security_group
+
+- name: Set the listeners secure
+  set_fact:
+    _elb_listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: "{{ application_port }}"
+      - protocol: https
+        instance_protocol: http
+        load_balancer_port: 443
+        instance_port: "{{ application_port }}"
+        ssl_certificate_id: "{{ elb_ssl_certificate_name }}"
+  when: elb_secure_https
+
+
+- name: Set the listeners unsecure
+  set_fact:
+    _elb_listeners:
+      - protocol: http
+        load_balancer_port: 80
+        instance_port: "{{ application_port }}"
+  when: not elb_secure_https
+
+- name: Create ELB
+  ec2_elb_lb:
+    name: "{{ application_name }}"
+    state: present
+    subnets: "{{ elb_subnets | join(',') }}"
+    security_group_names: "['{{ application_name }}-elb']"
+    connection_draining_timeout: "{{ elb_connection_draining_timeout }}"
+    listeners: "{{ _elb_listeners }}"
+    health_check:
+        ping_protocol: http # options are http, https, ssl, tcp
+        ping_port: "{{ application_port }}"
+        ping_path: "{{ elb_health_check_ping_path }}" # not required for tcp or ssl
+        response_timeout: "{{ elb_health_check_response_timeout }}" # seconds
+        interval: "{{ elb_health_check_interval }}" # seconds
+        unhealthy_threshold: "{{ elb_health_check_unhealthy_threshold }}"
+        healthy_threshold: "{{ elb_health_check_healthy_threshold }}"
+    tags:
+      Name: "{{ application_name }}-cache"
+  register: load_balancer

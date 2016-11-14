@@ -1,14 +1,7 @@
-environment_name: "development"
-aws_profile: "my-dev-aws-account"
-aws_account_id: 12345
-
-### Task definitions specific.
-### Optional values, uncomment to override, default values are shown below (see default/vars/main.yml for more info)
-#docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"
-#docker_image_name: "{{ application_name }}"
-#docker_image_tag: "latest"
-<<<<<<< HEAD
-=======
+#
+# This file is part of the ansible-template project and should not be changed
+#
+---
 
 ### ELB Specific: (some can go to infra/vars/main.yml if they're shared variables)
 ### if you set create_elb: true, all the below variables are necessary (except ssl)
@@ -16,7 +9,14 @@ aws_account_id: 12345
 # application_port: 9000   # application port the ELB will redirect traffic to
 # elb_secure_https: false  # if set to true, will force traffic over https (443), else port (80)
 # elb_ssl_certificate_name: # if you set elb_secure_https variable, this variable should be set
-# elb_inbound_ips:   
+# elb_inbound_ips:
 #  - "192.168.0.0/24"     # they're CIDR
 #  - "192.168.1.0/24"
->>>>>>> f73111247fc88b95e55f1680c56b25438ae80eb4
+
+create_elb: false
+elb_connection_draining_timeout: 60
+elb_health_check_ping_path: "/"
+elb_health_check_response_timeout: 5
+elb_health_check_interval: 15
+elb_health_check_unhealthy_threshold: 6
+elb_health_check_healthy_threshold: 2
