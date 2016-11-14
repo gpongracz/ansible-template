@@ -38,9 +38,9 @@ application_security_group_default_open_ports:
   - port: 22
     from: "0.0.0.0/0"
 # The application port and ssh are opened by default, any additional ports can be configured in this list and will be merged.
-application_security_group_addiontal_open_ports: []
+application_security_group_additional_open_ports: []
 # this is is resulting effective group
-application_security_group_open_ports: "{{ application_security_group_default_open_ports + application_security_group_addiontal_open_ports }}"
+application_security_group_open_ports: "{{ application_security_group_default_open_ports + application_security_group_additional_open_ports }}"
 
 
 # ECS Related
