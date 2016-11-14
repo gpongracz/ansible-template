@@ -1,0 +1,14 @@
+#
+# This file is part of the ansible-template project and should not be changed
+#
+---
+# ELB related
+create_elb: false
+elb_connection_draining_timeout: 60
+elb_health_check_ping_path: "/"
+elb_health_check_response_timeout: 5
+elb_health_check_interval: 15
+elb_health_check_unhealthy_threshold: 6
+elb_health_check_healthy_threshold: 2
+
+
