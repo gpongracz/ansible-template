@@ -50,5 +50,10 @@ application_security_group_open_ports: "{{ application_security_group_default_op
 #     value: "{{ my_variable }}"
 #   - name: "MY_SECOND_VAR"
 #     value: "hardcoded"
+# ecs_port_mappings:
+#   - containerPort: "8080"
+#     hostPort: "8080"
 
-ecs_environment_variables: "{{ [] }"
+ecs_environment_variables: []
+ecs_port_mappings: []
+
