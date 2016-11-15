@@ -33,7 +33,7 @@ asg_additional_tags: []
 # - ELB eventually
 application_port: 9000
 application_security_group_default_open_ports:
-  - port: " {{ application_port }}"
+  - port: "{{ application_port }}"
     from: "0.0.0.0/0"
   - port: 22
     from: "0.0.0.0/0"

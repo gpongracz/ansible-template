@@ -30,8 +30,8 @@
 - name: Create inboud traffic rules
   set_fact:
     proto: tcp
-    from_port: "{{ item.port }}"
-    to_port: "{{ item.port }}"
+    from_port: "{{ item.port | int }}"
+    to_port: "{{ item.port | int }}"
     cidr_ip: "{{ item.from }}"
   with_items: "{{ application_security_group_open_ports }}"
   register: _app_security_group_rules_output
