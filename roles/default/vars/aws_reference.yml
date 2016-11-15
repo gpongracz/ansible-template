@@ -19,8 +19,15 @@ launch_config_amis_per_region:
 
 # This maps the available resources per instance type. used to auto assign resources to ecs tasks
 ecs_resources_per_instance_type:
+  t2.micro:
+    cpu: 1024
+    memory: 995
   t2.small:
     cpu: 1024
     memory: 2003
+  t2.medium:
+    cpu: 2048
+    memory: 3954
+
 
 resources_for_instance_type: "{{ ecs_resources_per_instance_type[launch_config_instance_size] }}"
