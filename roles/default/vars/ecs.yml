@@ -3,9 +3,6 @@
 #
 ---
 
-# ECS related
-ecs_cluster_name: "{{ application_name }}"
-
 # Defaults to a sane location on the region's ECR
 default_docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"
 
@@ -15,21 +12,9 @@ default_docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazon
 #docker_image_name: "{{ application_name }}"
 #docker_image_tag: "latest"
 
-# Example use:
-#
-# ecs_services:
-#   - name: some-service
-#     task:
-#       containers:
-#           name: foo
-#           # container_name: some_name (optional)
-#           #cpu: 1000 # (optional) - default to percentage of number of tasks and resources per instance type
-#           #memory: 1000
-#           #image: postgres # (optional) - defaults to application_name
-#           #environment: ( optional )
-#
-# This defaults to a single service with a single container
 
+# ECS related
+ecs_cluster_name: "{{ application_name }}"
 ecs_environment_variables: []
 ecs_port_mappings: []
 
