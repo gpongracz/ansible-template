@@ -30,6 +30,9 @@ default_docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazon
 #
 # This defaults to a single service with a single container
 
+ecs_environment_variables: []
+ecs_port_mappings: []
+
 ecs_services:
   - name: "{{ application_name }}"
     task: # A service always has a single task, which is mapped here.
