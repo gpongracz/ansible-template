@@ -15,6 +15,7 @@
             ECS_CLUSTER={{ ecs_cluster_name }}
             AWS_DEFAULT_REGION={{ aws_region }}
       bootcmd:
+        - yum update -y ecs-init
         - docker pull amazon/amazon-ecs-agent:latest
 
 
