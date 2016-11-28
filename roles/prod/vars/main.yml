@@ -1,2 +1,5 @@
-aws_profile: "my-prod-aws-account"
-which_env: "this is prod"
+environment_name: "production"     # environment name (development, test, production)
+aws_profile: "my-prod-aws-account" # aws_profile on your computer to use for doing ansible deploy
+aws_account_id: 34567              # aws account where docker repository is
+vpc_id: "bar"                      # vpc_id to fill 
+launch_config_key_name: "KeyPairName" 
