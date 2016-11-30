@@ -90,3 +90,24 @@ echo "12345">.vaultpassword
  - `dlogt` : get the log with timestamps of the running container
  - `dlog -ft` : get the log of the running container with tailing and timestamps
  - `dex <command>` : docker execute command (interactive mode) on the running container (ex: `dex bash`)
+
+# Optional Variable overriding
+
+All of the following variables already have a value, and should only be overriden if you require changing their default values. Look into the `default` directory to understand how the default are set.
+
+To override a variable, just declare it in `infra/vars` (for shared variables) or `<env>/vars` (for environment specific). 
+
+## Configure ECS
+
+The following optional variables are available to override:
+- `ecs_environment_variables` : list of environment variables to set (array of name / value)
+- `ecs_port_mappings` : list of port mappings to set (array of containerPort / hostPort)
+- `ecs_log_driver` : log driver to use to send log to specified location (e.g. splunk, syslog)
+- `ecs_log_options` : options to provide based on `ecs_log_driver` value (see docker documentation)
+- `ecs_cluster_name` : defaults to `application_name` (not recommended to change)
+- `ecs_service` : write entire service from scratch (not recommended - advanced users only)
+- `docker_image_repo` : location of repository to pull from
+- `docker_image_name` : image name within the repo
+- `docker_image_tag` : tag of the image
+
+See `default/vars/ecs.yml`. 

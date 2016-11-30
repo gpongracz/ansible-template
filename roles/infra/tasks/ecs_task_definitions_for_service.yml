@@ -22,6 +22,8 @@
       environment: "{{ item.environment | default([])}}"
       portMappings: "{{ item.portMappings | default([])}}"
       links: "{{ item.links | default([])}}"
+      logConfiguration: "{{ item.logConfiguration | default(omit) }}"
+
   register: _build_container_output
   with_items: "{{ service.task.containers }}"
 
