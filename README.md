@@ -80,3 +80,13 @@ echo "12345">.vaultpassword
         - `tasks/`: tasks that will be executed by ansible
             - `main.yml`: main file. references variables as defined in `vars` and then references other tasks in the same subfolder.
             - `foo.yml`: create as many as you want, but make sure to include them in your `main.yml` file.
+
+# Shortcuts (alias and functions)
+
+ - `dps`: shortcut for `docker ps`
+ - `dl` : get the id of running docker container 
+ - `dlog` : get the log of the running container
+ - `dlogf` : get the tailing log of the running container
+ - `dlogt` : get the log with timestamps of the running container
+ - `dlog -ft` : get the log of the running container with tailing and timestamps
+ - `dex <command>` : docker execute command (interactive mode) on the running container (ex: `dex bash`)
