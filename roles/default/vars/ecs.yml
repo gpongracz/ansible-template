@@ -24,13 +24,16 @@ ecs_log_options:         # options required based on log driver
   # env: "ENV1,ENV2"        # example
   # labels: "label1,label2" # example
 
+ecs_taskdefinition_cpu: "{{ resources_for_instance_type.cpu }}"
+ecs_taskdefinition_memory: "{{ resources_for_instance_type.memory }}"
+
 ecs_services:
   - name: "{{ application_name }}"
     task: # A service always has a single task, which is mapped here.
       containers: # A task can have multiple containers
       - name: "{{ application_name }}"
-        cpu: "{{ resources_for_instance_type.cpu }}"
-        memory: "{{ resources_for_instance_type.memory }}"
+        # cpu: "{{ ecs_taskdefinition_cpu }}"
+        # memory: "{{ ecs_taskdefinition_memory }}"
         environment: "{{ ecs_environment_variables if ecs_environment_variables|length > 0 else omit }}"
         portMappings: "{{ ecs_port_mappings if ecs_port_mappings|length > 0 else omit }}"
         logConfiguration: 

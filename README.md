@@ -99,15 +99,20 @@ To override a variable, just declare it in `infra/vars` (for shared variables) o
 
 ## Configure ECS
 
-The following optional variables are available to override:
+The following optional variables are often overriden:
 - `ecs_environment_variables` : list of environment variables to set (array of name / value)
 - `ecs_port_mappings` : list of port mappings to set (array of containerPort / hostPort)
 - `ecs_log_driver` : log driver to use to send log to specified location (e.g. splunk, syslog)
 - `ecs_log_options` : options to provide based on `ecs_log_driver` value (see docker documentation)
-- `ecs_cluster_name` : defaults to `application_name` (not recommended to change)
-- `ecs_service` : write entire service from scratch (not recommended - advanced users only)
+
+The following optional variables are less often overriden:
 - `docker_image_repo` : location of repository to pull from
 - `docker_image_name` : image name within the repo
 - `docker_image_tag` : tag of the image
+- `ecs_taskdefinition_cpu` : task definition cpu (MUST be an int)
+- `ecs_taskdefinition_memory` : task definition memory (MUST be an int)
+- `ecs_cluster_name` : defaults to `application_name` (not recommended to change)
+- `ecs_service` : write entire service from scratch (not recommended - advanced users only)
+
 
 See `default/vars/ecs.yml`. 
