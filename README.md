@@ -123,14 +123,14 @@ The following optional variables are less often overriden:
 - `ecs_cluster_name` : defaults to `application_name` (not recommended to change)
 - `ecs_service` : write entire service from scratch (not recommended - advanced users only)
 
-It is assumed that the images are deployed at `"{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com/application_name:latest"`. If that's not the case, you can modify the environment variables below:
+It is assumed that the images are deployed at `"{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ application_name }}:latest"`. If that's not the case, you can modify the environment variables below:
 - `docker_image_repo` : location of repository to pull from
 - `docker_image_name` : image name within the repo
 - `docker_image_tag` : tag of the image
 
 [See default/vars/ecs.yml](./ansible/roles/default/vars/ecs.yml)
 
-### ASG
+### Autoscaling Group
 
 To activate the creation of an ASG, place in `infra/vars/main.yml` the following:
 
