@@ -9,6 +9,7 @@ asg_min_size: 1
 asg_max_size: 3
 asg_desired_capacity: 1
 asg_additional_tags: []
+asg_override_desired_capacity: false
 # This allows additional tags to be set on created instances
 # asg_additional_tags: []
 #  - Environment: "{{ environment }}"
