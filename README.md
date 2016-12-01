@@ -81,7 +81,101 @@ echo "12345">.vaultpassword
             - `main.yml`: main file. references variables as defined in `vars` and then references other tasks in the same subfolder.
             - `foo.yml`: create as many as you want, but make sure to include them in your `main.yml` file.
 
-# Shortcuts (alias and functions)
+# Ansible Variables 
+
+## Mandatory
+
+### Common
+
+Some variables are usually cross environment and should be placed in `infra/vars/main.yml`. 
+
+- `application_name`: your application name (used for ELB, ASG, ECS, Task Definition naming)
+- `aws_region`: aws region you're deploying to
+
+
+### Environment specific
+
+Some variables are always needed in `<env>/vars/main.yml`
+- `aws_profile` : aws credentials profile to use at defined in `~/.aws/credentials`. It is heavily recommended not to use the `default` profile
+- `aws_account_id` : https://portal.aws.amazon.com/gp/aws/manageYourAccount .
+- `vpc_id` : vpc your application will live under
+- `launch_config_key_name` : ssh key name for your ec2 instances (has to be an existing key)
+- `environment_name` : e.g. development, test, production
+
+
+## Optional overriding
+
+All of the following variables already have a value, and should only be overriden if you require changing their default values. Look into the `default` directory to understand how the default are set.
+
+To override a variable, just declare it in `infra/vars/main.yml` (if shared variables) or `<env>/vars/main.yml` (for environment specific). 
+
+### ECS
+
+The following optional variables are often overriden:
+- `ecs_environment_variables` : list of environment variables to set (array of name / value)
+- `ecs_port_mappings` : list of port mappings to set (array of containerPort / hostPort)
+- `ecs_log_driver` : log driver to use to send log to specified location (e.g. splunk, syslog)
+- `ecs_log_options` : options to provide based on `ecs_log_driver` value (see docker documentation)
+
+The following optional variables are less often overriden:
+- `ecs_taskdefinition_cpu` : task definition cpu (MUST be an int)
+- `ecs_taskdefinition_memory` : task definition memory (MUST be an int)
+- `ecs_cluster_name` : defaults to `application_name` (not recommended to change)
+- `ecs_service` : write entire service from scratch (not recommended - advanced users only)
+
+It is assumed that the images are deployed at `"{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ application_name }}:latest"`. If that's not the case, you can modify the environment variables below:
+- `docker_image_repo` : location of repository to pull from
+- `docker_image_name` : image name within the repo
+- `docker_image_tag` : tag of the image
+
+[See default/vars/ecs.yml](./ansible/roles/default/vars/ecs.yml)
+
+### Autoscaling Group
+
+To activate the creation of an ASG, place in `infra/vars/main.yml` the following:
+
+- `create_auto_scaling_group: true`
+
+The following variables are mandatory:
+
+- `asg_subnets` : subnets for the auto-scaling group, under which your ec2 instances will be created. Reference more than one subnet to spawn across multiple availability zones. 
+
+The following optional variables are available:
+
+- `asg_additional_tags`: list of key value pairs that are applied as tags to your ec2 instances. 
+- `asg_min_size` : minimum number of instances in your asg
+- `asg_max_size` : max number of instances
+- `asg_desired_capacity` : desired ASG capacity at launch
+- `asg_override_desired_capacity` : force desired capacity (default false). Use true if you want to manually scale
+
+- `launch_config_instance_size` : ec2 instance type
+- `launch_config_instance_profile_name`: IAM instance profile name used to define EC2 instance permissions. 
+- `launch_config_assign_public_ip` : boolean (true / false) to assign a public ip for ec2 instances
+
+Application related: if user can access your application externally
+- `application_port`: port that will be opened for your application
+- `application_security_group_additional_open_ports`: additional list of ports (port / from) to add to security group
+
+[See default/vars/asg.yml](./ansible/roles/default/vars/asg.yml)
+
+### ELB
+
+To activate the creation of an ELB, place in `infra/vars/main.yml` the following:
+
+- `create_elb: true`
+
+The following variables can be optionally overriden:
+
+- `elb_connection_draining_timeout` : see aws doc
+- `elb_health_check_ping_path` : ping path to check app health
+- `elb_health_check_response_timeout` : see aws doc
+- `elb_health_check_interval` : see aws doc
+- `elb_health_check_unhealthy_threshold` : see aws doc
+- `elb_health_check_healthy_threshold` : see aws doc
+
+[See default/vars/elb.yml](./ansible/roles/default/vars/elb.yml)
+
+# EC2 Instances Shortcuts (alias and functions)
 
  - `dps`: shortcut for `docker ps`
  - `dl` : get the id of running docker container 
@@ -91,28 +185,3 @@ echo "12345">.vaultpassword
  - `dlog -ft` : get the log of the running container with tailing and timestamps
  - `dex <command>` : docker execute command (interactive mode) on the running container (ex: `dex bash`)
 
-# Optional Variable overriding
-
-All of the following variables already have a value, and should only be overriden if you require changing their default values. Look into the `default` directory to understand how the default are set.
-
-To override a variable, just declare it in `infra/vars` (for shared variables) or `<env>/vars` (for environment specific). 
-
-## Configure ECS
-
-The following optional variables are often overriden:
-- `ecs_environment_variables` : list of environment variables to set (array of name / value)
-- `ecs_port_mappings` : list of port mappings to set (array of containerPort / hostPort)
-- `ecs_log_driver` : log driver to use to send log to specified location (e.g. splunk, syslog)
-- `ecs_log_options` : options to provide based on `ecs_log_driver` value (see docker documentation)
-
-The following optional variables are less often overriden:
-- `docker_image_repo` : location of repository to pull from
-- `docker_image_name` : image name within the repo
-- `docker_image_tag` : tag of the image
-- `ecs_taskdefinition_cpu` : task definition cpu (MUST be an int)
-- `ecs_taskdefinition_memory` : task definition memory (MUST be an int)
-- `ecs_cluster_name` : defaults to `application_name` (not recommended to change)
-- `ecs_service` : write entire service from scratch (not recommended - advanced users only)
-
-
-See `default/vars/ecs.yml`. 

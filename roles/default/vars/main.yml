@@ -10,22 +10,6 @@ create_ecs_service: false
 
 aws_region: ap-southeast-2
 
-launch_config_instance_size: "t2.small"
-launch_config_instance_profile_name: null
-launch_config_user_data: ""
-launch_config_assign_public_ip: false
-
-# ASG Related
-asg_subnets: []
-asg_min_size: 1
-asg_max_size: 3
-asg_desired_capacity: 1
-asg_additional_tags: []
-# This allows additional tags to be set on created instances
-# asg_additional_tags: []
-#  - Environment: "{{ environment }}"
-#    propagate_at_launch: yes
-
 
 # Application port, used by
 # - Security groups
@@ -40,19 +24,3 @@ application_security_group_default_open_ports:
 application_security_group_additional_open_ports: []
 # this is is resulting effective group
 application_security_group_open_ports: "{{ application_security_group_default_open_ports + application_security_group_additional_open_ports }}"
-
-
-# ECS Related
-# Usage :
-# ecs_environment_variables:
-#   - name: "MY_ENV_VAR"
-#     value: "{{ my_variable }}"
-#   - name: "MY_SECOND_VAR"
-#     value: "hardcoded"
-# ecs_port_mappings:
-#   - containerPort: "8080"
-#     hostPort: "8080"
-
-ecs_environment_variables: []
-ecs_port_mappings: []
-

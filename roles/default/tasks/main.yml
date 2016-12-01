@@ -10,3 +10,5 @@
 - include_vars: ecs.yml
 
 - include_vars: elb.yml
+
+- include_vars: asg.yml

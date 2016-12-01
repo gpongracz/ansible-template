@@ -1,0 +1,21 @@
+#
+# This file is part of the ansible-template project and should not be changed
+#
+---
+
+# ASG Related
+asg_subnets: []
+asg_min_size: 1
+asg_max_size: 3
+asg_desired_capacity: 1
+asg_additional_tags: []
+asg_override_desired_capacity: false
+# This allows additional tags to be set on created instances
+# asg_additional_tags: []
+#  - Environment: "{{ environment }}"
+#    propagate_at_launch: yes
+
+
+launch_config_instance_size: "t2.small"
+launch_config_instance_profile_name: null
+launch_config_assign_public_ip: false

@@ -91,7 +91,9 @@
 - name: Set asg_properties variable from JSON output if the Auto Scaling Group already exists
   set_fact:
     asg_properties_desired_capacity: "{{ (asg_properties_result.stdout | from_json).AutoScalingGroups[0].DesiredCapacity }}"
-  when: (asg_properties_result.stdout | from_json).AutoScalingGroups | count
+  when: 
+    - not asg_override_desired_capacity
+    - (asg_properties_result.stdout | from_json).AutoScalingGroups | count
 
 - name: create autoscaling group
   ec2_asg:
