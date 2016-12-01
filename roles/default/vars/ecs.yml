@@ -19,8 +19,8 @@ ecs_environment_variables: []
 ecs_port_mappings: []
 ecs_log_driver: "json-file" # other options include splunk, etc
 ecs_log_options:         # options required based on log driver
-  - max-size: "4g"          # the log won't occupy all the disk space
-  # - max-file: "10"        # example
+  max-size: "4g"          # the log won't occupy all the disk space
+  # max-file: "10"        # example
   # env: "ENV1,ENV2"        # example
   # labels: "label1,label2" # example
 

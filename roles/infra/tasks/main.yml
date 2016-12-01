@@ -14,10 +14,10 @@
   when: application_name == 'my-app'
 
 - include: ec2_elb.yml
-  when: "{{ create_elb }}"
+  when: create_elb
 
 - include: ec2_autoscaling.yml
-  when: "{{ create_auto_scaling_group }}"
+  when: create_auto_scaling_group
 
 - include: ecs_cluster.yml
 

@@ -16,7 +16,6 @@ launch_config_user_data: ""
 launch_config_assign_public_ip: false
 
 # ASG Related
-asg_additional_tags: []
 asg_subnets: []
 asg_min_size: 1
 asg_max_size: 3
