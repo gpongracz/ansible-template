@@ -17,6 +17,15 @@ default_docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazon
 ecs_cluster_name: "{{ application_name }}"
 ecs_environment_variables: []
 ecs_port_mappings: []
+# Usage :
+# ecs_environment_variables:
+#   - name: "MY_ENV_VAR"
+#     value: "{{ my_variable }}"
+#   - name: "MY_SECOND_VAR"
+#     value: "hardcoded"
+# ecs_port_mappings:
+#   - containerPort: "8080"
+#     hostPort: "8080"
 ecs_log_driver: "json-file" # other options include splunk, etc
 ecs_log_options:         # options required based on log driver
   max-size: "4g"          # the log won't occupy all the disk space
