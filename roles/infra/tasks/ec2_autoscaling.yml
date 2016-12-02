@@ -17,6 +17,7 @@
       bootcmd:
         - yum update -y ecs-init
         - docker pull amazon/amazon-ecs-agent:latest
+        - touch /home/ec2-user/.bashrc
         - echo "alias dps='docker ps'" >> /home/ec2-user/.bashrc
         - echo "function dl { (docker ps | fgrep 'aws.com/{{ ecs_cluster_name }}:' | awk '{print \$1}'; docker ps -l -q) | head -1;} " >> /home/ec2-user/.bashrc
         - echo 'function dlog { x="$(dl)"; if [ -z "$x" ]; then echo "Container not running."; else docker logs "$@" $x; fi ;}' >> /home/ec2-user/.bashrc
