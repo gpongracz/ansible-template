@@ -17,7 +17,7 @@
 
 - name: ELB security inbound traffic
   ec2_group:
-    name: "{{ application_name  }}-elb"
+    name: "{{ application_name }}-elb"
     description:  Allows traffic into the load balancer
     vpc_id: "{{ vpc_id }}"
     rules: "{{ _elb_security_group_rules }}"

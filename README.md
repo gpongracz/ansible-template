@@ -163,9 +163,13 @@ Application related: if user can access your application externally
 To activate the creation of an ELB, place in `infra/vars/main.yml` the following:
 
 - `create_elb: true`
+- `elb_inbound_ips`: array of authorized IPs for ELB inbound traffic rules. 
+- `application_port`: your application port that the ELB will use to communicate with
 
 The following variables can be optionally overriden:
 
+- `elb_secure_https`: set to true if you'd like to authorize https traffic.
+- `elb_ssl_certificate_name`: when `elb_secure_https` is set to true, you need to provide the ssl certificate name
 - `elb_connection_draining_timeout` : see aws doc
 - `elb_health_check_ping_path` : ping path to check app health
 - `elb_health_check_response_timeout` : see aws doc
