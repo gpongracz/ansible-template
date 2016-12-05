@@ -8,78 +8,32 @@ curl -L https://github.com/simple-machines/ansible-template/archive/master.tar.g
 mv ansible-template-master ansible
 cd ansible
 echo "12345" > .vaultpassword
-ansible-vault create --vault-password-file .vaultpassword roles/dev/vars/secret.yml
-ansible-vault create --vault-password-file .vaultpassword roles/prod/vars/secret.yml
+./build.sh
 ```
 
-## Ansible
+## Running
 
-Requires ansible 2.1+
+Requires Docker to be installed
 
 Install by executing the following command :
 
  ```
- sudo pip install -U git+https://github.com/ansible/ansible.git@devel#egg=ansible
- sudo pip install -U boto
- sudo pip install -U boto3
+ ./build.sh
  ```
-
-## Adding password file (needed to run example)
-
-```
-echo "12345">.vaultpassword
-```
 
 ## Running the examples
 ```
-./run-playbook dev.yml
-./run-playbook prod.yml
+./run-playbook.sh dev.yml
+./run-playbook.sh prod.yml
 ```
 
-## Editing the secret variables
+## Adding password file (needed to run example) and edit the secret variables
+
 ```
+echo "12345">.vaultpassword
 ./editvault.sh dev
 ./editvault.sh prod
 ```
-
-## Creating new vault password and encrypting variables
-
-- create your own `.vaultpassword` (never commit this file)
-- create your own variable file in `roles/<env>/vars/secret.yml` (replace <env> with dev, prod, test, etc..)
-- run the following `ansible-vault encrypt ./roles/<env>/vars/secret.yml --vault-password-file .vaultpassword` (replace <env> with dev, prod, test, etc..)
-- for subsequent edits: `./editvault.sh <env>` (replace <env> with dev, prod, test, etc..)
-
-
-
-# Directory Structure (aka what goes where)
-
-
-  - `ansible/`: root folder
-    - `run-playbook.sh`: script to run deployment. ex `./run-playbook.sh dev.yml`
-    - `editvault.sh`: script to change secret variables ex `./editvault.sh dev` modifies the file: `./dev/vars/secret.yml`. This requires `.vaultpassword` to be present.
-    - `.vaultpassword`: contains the password to decrypt the vault. Do not commit this file!
-    - `dev.yml, prod.yml, test.yml`: orchestrate deployment. **They should only contain information about the environment (profile) and roles to execute**. Example:
-
-        ```
-        - hosts: localhost
-          gather_facts: yes
-          environment:
-            AWS_PROFILE: "my-company-dev"
-          roles:
-            - dev
-            - infra
-        ```
-    - `dev/, prod/, test/, etc`: directory that contain environment specific **variables**
-        - `tasks/main.yml`: File that should be edited to *only* include other variable files.
-        - `vars/`: folder containing variables specific to the environment
-            - `secret.yml`: encrypted variables (through `editvault.sh`)
-            - `main.yml`: main variables
-            - `foo.yml`: create as many as you want, but make sure to include them in your `tasks/main.yml`
-    - `infra/`: directory that includes all the tasks. Could be seen as a "common" directory
-        - `vars/`: define variables that are common. Can refer to your specific
-        - `tasks/`: tasks that will be executed by ansible
-            - `main.yml`: main file. references variables as defined in `vars` and then references other tasks in the same subfolder.
-            - `foo.yml`: create as many as you want, but make sure to include them in your `main.yml` file.
 
 # Ansible Variables 
 
@@ -188,4 +142,37 @@ The following variables can be optionally overriden:
  - `dlogt` : get the log with timestamps of the running container
  - `dlog -ft` : get the log of the running container with tailing and timestamps
  - `dex <command>` : docker execute command (interactive mode) on the running container (ex: `dex bash`)
+
+
+
+# Directory Structure (aka what goes where)
+
+
+  - `ansible/`: root folder
+    - `run-playbook.sh`: script to run deployment. ex `./run-playbook.sh dev.yml`
+    - `editvault.sh`: script to change secret variables ex `./editvault.sh dev` modifies the file: `./dev/vars/secret.yml`. This requires `.vaultpassword` to be present.
+    - `.vaultpassword`: contains the password to decrypt the vault. Do not commit this file!
+    - `dev.yml, prod.yml, test.yml`: orchestrate deployment. **They should only contain information about the environment (profile) and roles to execute**. Example:
+
+        ```
+        - hosts: localhost
+          gather_facts: yes
+          environment:
+            AWS_PROFILE: "my-company-dev"
+          roles:
+            - dev
+            - infra
+        ```
+    - `dev/, prod/, test/, etc`: directory that contain environment specific **variables**
+        - `tasks/main.yml`: File that should be edited to *only* include other variable files.
+        - `vars/`: folder containing variables specific to the environment
+            - `secret.yml`: encrypted variables (through `editvault.sh`)
+            - `main.yml`: main variables
+            - `foo.yml`: create as many as you want, but make sure to include them in your `tasks/main.yml`
+    - `infra/`: directory that includes all the tasks. Could be seen as a "common" directory
+        - `vars/`: define variables that are common. Can refer to your specific
+        - `tasks/`: tasks that will be executed by ansible
+            - `main.yml`: main file. references variables as defined in `vars` and then references other tasks in the same subfolder.
+            - `foo.yml`: create as many as you want, but make sure to include them in your `main.yml` file.
+
 

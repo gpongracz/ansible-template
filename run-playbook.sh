@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ansible-playbook -vvv --vault-password-file=.vaultpassword $1 $2 $3
+docker run -it -v $(pwd):/project -v ~/.aws:/root/.aws -e DEPLOY_CONFIG=$1 simplemachines/ansible-template scripts/run-playbook.sh
