@@ -8,7 +8,10 @@ asg_subnets: []
 asg_min_size: 1
 asg_max_size: 1
 asg_desired_capacity: 1
-asg_additional_tags: []
+asg_additional_tags:
+  - Name: "{{ application_name }}"
+    propagate_at_launch: yes
+    
 asg_override_desired_capacity: false
 # This allows additional tags to be set on created instances
 # asg_additional_tags: []
