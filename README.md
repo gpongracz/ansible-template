@@ -21,13 +21,13 @@ Install by executing the following command :
  ./build.sh
  ```
 
-## Running the examples
+## Running playbooks after configuration
 ```
 ./run-playbook.sh dev.yml
 ./run-playbook.sh prod.yml
 ```
 
-## Adding password file (needed to run example) and edit the secret variables
+## Adding password file and edit the secret variables
 
 ```
 echo "12345">.vaultpassword
@@ -35,108 +35,91 @@ echo "12345">.vaultpassword
 ./editvault.sh prod
 ```
 
-# Ansible Variables 
+# Configuration - Ansible Variables
 
-## Mandatory
+infra vs env explanation
 
-### Common
+## Global Variables
 
-Some variables are usually cross environment and should be placed in `infra/vars/main.yml`. 
-
-- `application_name`: your application name (used for ELB, ASG, ECS, Task Definition naming)
-- `aws_region`: aws region you're deploying to
-
-
-### Environment specific
-
-Some variables are always needed in `<env>/vars/main.yml`
-- `aws_profile` : aws credentials profile to use at defined in `~/.aws/credentials`. It is heavily recommended not to use the `default` profile
-- `aws_account_id` : https://portal.aws.amazon.com/gp/aws/manageYourAccount .
-- `vpc_id` : vpc your application will live under
-- `launch_config_key_name` : ssh key name for your ec2 instances (has to be an existing key)
-- `environment_name` : e.g. development, test, production
+| variable name          | default | env/infra guidance | importance | description                                                                                             |
+|------------------------|---------|-----------|------------|---------------------------------------------------------------------------------------------------------|
+| application_name       | my-app  | infra     | mandatory  | Your application name. Letters (uppercase and lowercase), numbers, hyphens, and underscores are allowed |
+| aws_region             |         | env       | mandatory  | Region where you application will be deployed                                                           |
+| aws_profile            |         | env       | mandatory  | aws profile to use for deployment (in ~/.aws/credentials)                                               |
+| vpc_id                 |         | env       | mandatory  | vpc the application will be deployed in                                                                 |
+| launch_config_key_name |         | env       | mandatory  | ssh key name for your ec2 instances (existing key)                                                      |
 
 
-## Optional overriding
+## ECS
 
-All of the following variables already have a value, and should only be overriden if you require changing their default values. Look into the `default` directory to understand how the default are set.
+### Service / Task Definition
 
-To override a variable, just declare it in `infra/vars/main.yml` (if shared variables) or `<env>/vars/main.yml` (for environment specific). 
+| variable name             | default                                                     | env/infra guidance                                     | importance | description                                                                                                                                                                                   |
+|---------------------------|-------------------------------------------------------------|--------------------------------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ecs_environment_variables | []                                                          | define structure in infra, replace env specific in env | high       | Use this variable if your application requires environment variables                                                                                                                          |
+| ecs_port_mappings         | []                                                          | infra                                                  | high       | Array of port mappings to set (containerPort / hostPort). e.g. ecs_port_mappings:  - containerPort: 80    hostPort: 80                                                                        |
+| ecs_log_driver            | json-file                                                   | env                                                    | low        | log options (replace this variable if you want to send logs to external aggregators e.g. splunk)                                                                                              |
+| ecs_taskdefinition_cpu    | max it can use for the instance                             |                                                        | low        | the cpu for the task definition. By default utilise all available                                                                                                                             |
+| ecs_taskdefinition_memory | max it can use for the instance                             |                                                        | low        | the memory for the task definition. By default utilise all available                                                                                                                          |
+| ecs_cluster_name          | application_name                                            |                                                        | very low   | your ecs cluster name is your application name                                                                                                                                                |
+| ecs_service               | complex                                                     |                                                        | very low   | advanced users only. Do not override unless you know what you're doing.                                                                                                                       |
 
-### ECS
+### Docker image
 
-The following optional variables are often overriden:
-- `ecs_environment_variables` : list of environment variables to set (array of name / value)
-- `ecs_port_mappings` : list of port mappings to set (array of containerPort / hostPort)
-- `ecs_log_driver` : log driver to use to send log to specified location (e.g. splunk, syslog)
-- `ecs_log_options` : options to provide based on `ecs_log_driver` value (see docker documentation)
+The AWS account ID where the docker images are stored (ECR). See docker_image_repo. Images are expected to be found at `"{{ docker_image_repo }}/{{ application_name }}:{{ docker_image_tag }}"`.
 
-The following optional variables are less often overriden:
-- `ecs_taskdefinition_cpu` : task definition cpu (MUST be an int)
-- `ecs_taskdefinition_memory` : task definition memory (MUST be an int)
-- `ecs_cluster_name` : defaults to `application_name` (not recommended to change)
-- `ecs_service` : write entire service from scratch (not recommended - advanced users only)
 
-It is assumed that the images are deployed at `"{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ application_name }}:latest"`. If that's not the case, you can modify the environment variables below:
-- `docker_image_repo` : location of repository to pull from
-- `docker_image_name` : image name within the repo
-- `docker_image_tag` : tag of the image
+| variable name             | default                                                     | env/infra guidance                                     | importance | description                                                                                                                                                                                   |
+|---------------------------|-------------------------------------------------------------|--------------------------------------------------------|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| aws_account_id            |                                                             | env                                                    | mandatory  | The AWS account ID where the docker images are stored (ECR). See docker_image_repo. Images is expected to be found at "{{ docker_image_repo }}/{{ application_name }}:{{ docker_image_tag }}" |
+| docker_image_repo         | {{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com | env                                                    | low        | repository host name where images are stored                                                                                                                                                  |
+| docker_image_name         | {{ application_name }}                                      | infra                                                  | low        | image name to look for                                                                                                                                                                        |
+| docker_image_tag          | latest                                                      | env                                                    | medium     | image tag. Change this if you need to use a specific version instead of latest                                                                                                                |
 
-[See default/vars/ecs.yml](./ansible/roles/default/vars/ecs.yml)
 
-### Autoscaling Group
+## Autoscaling Group
 
 To activate the creation of an ASG, place in `infra/vars/main.yml` the following:
 
 - `create_auto_scaling_group: true`
 
-The following variables are mandatory:
+| variable name                                    | default  | env/infra guidance                             | importance | description                                                                                                                                  |
+|--------------------------------------------------|----------|------------------------------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+| asg_subnets                                      | []       | env                                            | mandatory  | List of subnets to deploy the application to                                                                                                 |
+| asg_additional_tags                              | []       | common structure in infra, env specific in env | high       | List of tags to apply to your asg and its ec2 instances                                                                                      |
+| asg_min_size                                     | 1        | env                                            | medium     | minimum number of ec2 instances in your asg                                                                                                  |
+| asg_max_size                                     | 1        | env                                            | medium     | maximum number of ec2 instances in your asg                                                                                                  |
+| asg_desired_capacity                             | 1        | env                                            | medium     | desired number of ec2 instances in your asg                                                                                                  |
+| asg_override_desired_capacity                    | false    | env                                            | high       | if false, asg_desired_capacity will be ignored if an asg already exists. if true, the asg will scale in or out to match asg_desired_capacity |
+| launch_config_instance_size                      | t2.small | env                                            | high       | ec2 instance size                                                                                                                            |
+| launch_config_instance_profile_name              |          | env                                            | high       | IAM instance profile name to define EC2 instances permissions                                                                                |
+| launch_config_assign_public_ip                   | false    | env                                            | medium     | true means a public IP will be assigned to every new instance                                                                                |
+| application_port                                 |          | infra                                          | high       | port that will be opened for your application                                                                                                |
+| application_security_group_additional_open_ports | []       | infra                                          | medium     | list of ports (from / port) to add to the security group                                                                                     |
 
-- `asg_subnets` : subnets for the auto-scaling group, under which your ec2 instances will be created. Reference more than one subnet to spawn across multiple availability zones. 
-
-The following optional variables are available:
-
-- `asg_additional_tags`: list of key value pairs that are applied as tags to your ec2 instances. 
-- `asg_min_size` : minimum number of instances in your asg
-- `asg_max_size` : max number of instances
-- `asg_desired_capacity` : desired ASG capacity at launch
-- `asg_override_desired_capacity` : force desired capacity (default false). Use true if you want to manually scale
-
-- `launch_config_instance_size` : ec2 instance type
-- `launch_config_instance_profile_name`: IAM instance profile name used to define EC2 instance permissions. 
-- `launch_config_assign_public_ip` : boolean (true / false) to assign a public ip for ec2 instances
-
-Application related: if user can access your application externally
-- `application_port`: port that will be opened for your application
-- `application_security_group_additional_open_ports`: additional list of ports (port / from) to add to security group
-
-[See default/vars/asg.yml](./ansible/roles/default/vars/asg.yml)
-
-### ELB
+## ELB
 
 To activate the creation of an ELB, place in `infra/vars/main.yml` the following:
 
 - `create_elb: true`
-- `elb_inbound_ips`: array of authorized IPs for ELB inbound traffic rules. 
-- `application_port`: your application port that the ELB will use to communicate with
 
-The following variables can be optionally overriden:
-
-- `elb_secure_https`: set to true if you'd like to authorize https traffic.
-- `elb_ssl_certificate_name`: when `elb_secure_https` is set to true, you need to provide the ssl certificate name
-- `elb_connection_draining_timeout` : see aws doc
-- `elb_health_check_ping_path` : ping path to check app health
-- `elb_health_check_response_timeout` : see aws doc
-- `elb_health_check_interval` : see aws doc
-- `elb_health_check_unhealthy_threshold` : see aws doc
-- `elb_health_check_healthy_threshold` : see aws doc
-
-[See default/vars/elb.yml](./ansible/roles/default/vars/elb.yml)
+| variable name                        | default | env/infra guidance | importance | description                                                                                                  |
+|--------------------------------------|---------|--------------------|------------|--------------------------------------------------------------------------------------------------------------|
+| elb_inbound_ips                      |         | env                | mandatory  | array of authorized IPs for ELB inbound traffic rules                                                        |
+| application_port                     |         | infra              | mandatory  | The application port that the ELB will talk to                                                               |
+| elb_secure_https                     | false   | env                | high       | set to true if you'd like to authorise https traffic.                                                        |
+| elb_ssl_certificate_name             |         | env                | high       | if elb_secure_https is set to true, you need to provide the ssl certificate name                             |
+| elb_health_check_ping_path           | /       | infra              | high       | ping path for health checks (your application need to have a health check route that returns 200 if healthy) |
+| elb_connection_draining_timeout      | 60      | infra              | medium     | see aws doc                                                                                                  |
+| elb_health_check_response_timeout    | 5       | infra              | medium     | see aws doc                                                                                                  |
+| elb_health_check_interval            | 15      | infra              | medium     | see aws doc                                                                                                  |
+| elb_health_check_unhealthy_threshold | 6       | infra              | medium     | see aws doc                                                                                                  |
+| elb_health_check_healthy_threshold   | 2       | infra              | medium     | see aws doc                                                                                                  |
 
 # EC2 Instances Shortcuts (alias and functions)
 
  - `dps`: shortcut for `docker ps`
- - `dl` : get the id of running docker container 
+ - `dl` : get the id of running docker container
  - `dlog` : get the log of the running container
  - `dlogf` : get the tailing log of the running container
  - `dlogt` : get the log with timestamps of the running container
@@ -174,5 +157,3 @@ The following variables can be optionally overriden:
         - `tasks/`: tasks that will be executed by ansible
             - `main.yml`: main file. references variables as defined in `vars` and then references other tasks in the same subfolder.
             - `foo.yml`: create as many as you want, but make sure to include them in your `main.yml` file.
-
-
