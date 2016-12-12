@@ -46,6 +46,8 @@ ecs_taskdefinition_memory: "{{ resources_for_instance_type.memory }}"
 #   from: /mnt
 #   to: /mnt
 
+ecs_volume_name: "mnt"
+
 ecs_services:
   - name: "{{ application_name }}"
     task: # A service always has a single task, which is mapped here.
@@ -58,5 +60,5 @@ ecs_services:
         logConfiguration:
           logDriver: "{{ ecs_log_driver }}"
           options: "{{ ecs_log_options }}"
-        mountPoints: '{{ [{"containerPath": ecs_volume.to, "sourceVolume": "mnt"}] if ecs_volume else [] }}'
-    volumes: '{{ [{"name": "mnt", "host":{"sourcePath": ecs_volume.from }}] if ecs_volume else [] }}'
+        mountPoints: '{{ [{"containerPath": ecs_volume.to, "sourceVolume": ecs_volume_name}] if ecs_volume else [] }}'
+    volumes: '{{ [{"name": ecs_volume_name, "host":{"sourcePath": ecs_volume.from }}] if ecs_volume else [] }}'
