@@ -23,6 +23,7 @@
       portMappings: "{{ item.portMappings | default([])}}"
       links: "{{ item.links | default([])}}"
       logConfiguration: "{{ item.logConfiguration | default(omit) }}"
+      mountPoints: "{{ item.mountPoints | default(omit) }}"
 
   register: _build_container_output
   with_items: "{{ service.task.containers }}"
@@ -38,6 +39,7 @@
     containers: "{{ _containers | map('combine',{'cpu':ecs_taskdefinition_cpu|int, 'memory': ecs_taskdefinition_memory|int}) | list }}"
     state: present
     family: "{{ service.name }}"
+    volumes: "{{ service.volumes | default (omit) }}"
   register: "_created_task_definition"
 
 - name: Add to registered containers
