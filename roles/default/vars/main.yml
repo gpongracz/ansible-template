@@ -21,3 +21,7 @@ application_security_group_default_open_ports:
 application_security_group_additional_open_ports: []
 # this is is resulting effective group
 application_security_group_open_ports: "{{ application_security_group_default_open_ports + application_security_group_additional_open_ports }}"
+
+additional_user_data_bootcmd: |
+  - echo "you can add additional bootcommands"
+  - echo "by overwriting the variable additional_user_data_bootcmd"

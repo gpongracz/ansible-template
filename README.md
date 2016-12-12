@@ -96,6 +96,8 @@ To activate the creation of an ASG, place in `infra/vars/main.yml` the following
 | launch_config_assign_public_ip                   | false    | env                                            | medium     | true means a public IP will be assigned to every new instance                                                                                |
 | application_port                                 |          | infra                                          | high       | port that will be opened for your application                                                                                                |
 | application_security_group_additional_open_ports | []       | infra                                          | medium     | list of ports (from / port) to add to the security group                                                                                     |
+| additional_user_data_bootcmd | dummy echo commands (see default/main.yml) | infra | medium | multiline string that start by hyphens (-)
+
 
 ## ELB
 
