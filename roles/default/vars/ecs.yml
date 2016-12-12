@@ -16,7 +16,13 @@ default_docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazon
 # ECS related
 ecs_cluster_name: "{{ application_name }}"
 ecs_environment_variables: []
-ecs_port_mappings: []
+ecs_default_port_mappings:
+  - containerPort: "{{ application_port }}"
+    hostPort: "{{ application_port }}"
+
+ecs_additional_port_mappings: []
+ecs_port_mappings: "{{ ecs_default_port_mappings + ecs_additional_port_mappings }}"
+
 # Usage :
 # ecs_environment_variables:
 #   - name: "MY_ENV_VAR"
@@ -45,6 +51,6 @@ ecs_services:
         # memory: "{{ ecs_taskdefinition_memory }}"
         environment: "{{ ecs_environment_variables if ecs_environment_variables|length > 0 else omit }}"
         portMappings: "{{ ecs_port_mappings if ecs_port_mappings|length > 0 else omit }}"
-        logConfiguration: 
+        logConfiguration:
           logDriver: "{{ ecs_log_driver }}"
           options: "{{ ecs_log_options }}"
