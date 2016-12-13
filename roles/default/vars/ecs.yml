@@ -60,5 +60,5 @@ ecs_services:
         logConfiguration:
           logDriver: "{{ ecs_log_driver }}"
           options: "{{ ecs_log_options }}"
-        mountPoints: '{{ [{"containerPath": ecs_volume.to, "sourceVolume": ecs_volume_name}] if ecs_volume else [] }}'
-    volumes: '{{ [{"name": ecs_volume_name, "host":{"sourcePath": ecs_volume.from }}] if ecs_volume else [] }}'
+        mountPoints: '{{ [{"containerPath": ecs_volume.to, "sourceVolume": ecs_volume_name}] | default([]) }}'
+    volumes: '{{ [{"name": ecs_volume_name, "host":{"sourcePath": ecs_volume.from }}] | default([]) }}'
