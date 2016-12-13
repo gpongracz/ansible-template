@@ -8,19 +8,11 @@ curl -L https://github.com/simple-machines/ansible-template/archive/master.tar.g
 mv ansible-template-master ansible
 cd ansible
 echo "12345" > .vaultpassword
-./build.sh 
 ```
 
 ## Running
 
-Requires Docker to be installed.
-The image is hosted on DockerHub
-
-Install by executing the following command :
-
- ```
- ./build.sh
- ```
+Requires Docker to be installed (tested with Docker 1.12)
 
 ## Running playbooks after configuration
 ```
