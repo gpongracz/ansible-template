@@ -14,11 +14,10 @@
       name: "{{ item.container_name | default(item.name) }}" # Default container name to service name if no name set
       # 1. hardcoded cpu value
       # 2. cpu percentage applied to instance type resources ( TODO )
-      # Variables don't currently work here; see https://github.com/ansible/ansible-modules-extras/pull/3284
-      # cpu: 1000 #"{{ ecs_taskdefinition_cpu }}" # '{{ item.cpu | int }}'
+      cpu: "{{ item.cpu }}"
       essential: "{{ item.essential | default(true)}}"
       image:  "{{ docker_image_repo | default(default_docker_image_repo) }}/{{ docker_image_name | default(application_name) }}:{{ docker_image_tag | default('latest') }}"
-      # memory: 1000 # "{{ ecs_taskdefinition_memory }}"
+      memory: "{{ item.memory }}"
       environment: "{{ item.environment | default([])}}"
       portMappings: "{{ item.portMappings | default([])}}"
       links: "{{ item.links | default([])}}"
@@ -36,7 +35,7 @@
 
 - name: Create individual task definitions
   ecs_taskdefinition:
-    containers: "{{ _containers | map('combine',{'cpu':ecs_taskdefinition_cpu|int, 'memory': ecs_taskdefinition_memory|int}) | list }}"
+    containers: "{{ _containers }}"
     state: present
     family: "{{ service.name }}"
     volumes: "{{ service.volumes | default (omit) }}"

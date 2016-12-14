@@ -53,12 +53,12 @@ ecs_services:
     task: # A service always has a single task, which is mapped here.
       containers: # A task can have multiple containers
       - name: "{{ application_name }}"
-        # cpu: "{{ ecs_taskdefinition_cpu }}"
-        # memory: "{{ ecs_taskdefinition_memory }}"
+        cpu: "{{ ecs_taskdefinition_cpu }}"
+        memory: "{{ ecs_taskdefinition_memory }}"
         environment: "{{ ecs_environment_variables if ecs_environment_variables|length > 0 else omit }}"
         portMappings: "{{ ecs_port_mappings if ecs_port_mappings|length > 0 else omit }}"
         logConfiguration:
           logDriver: "{{ ecs_log_driver }}"
           options: "{{ ecs_log_options }}"
-        mountPoints: '{{ [{"containerPath": ecs_volume.to, "sourceVolume": ecs_volume_name}] if ecs_volume is defined else [] }}'
-    volumes: '{{ [{"name": ecs_volume_name, "host":{"sourcePath": ecs_volume.from }}] if ecs_volume is defined else [] }}'
+        mountPoints: '{{ [{"containerPath": ecs_volume.to, "sourceVolume": ecs_volume_name}] if ecs_volume else [] }}'
+    volumes: '{{ [{"name": ecs_volume_name, "host":{"sourcePath": ecs_volume.from }}] if ecs_volume else [] }}'
