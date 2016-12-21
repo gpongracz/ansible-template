@@ -29,6 +29,15 @@ ecs_resources_per_instance_type:
   t2.medium:
     cpu: 2048
     memory: 3954
+  t2.large:
+    cpu: 2048
+    memory: 8000
+  t2.xlarge:
+    cpu: 4096
+    memory: 16000
+  t2.2xlarge:
+    cpu: 8192
+    memory: 32000
 
 
 resources_for_instance_type: "{{ ecs_resources_per_instance_type[launch_config_instance_size] }}"
