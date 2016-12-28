@@ -7,7 +7,6 @@
   set_fact:
     _bootcmd: |
       - yum update -y ecs-init
-      - docker pull amazon/amazon-ecs-agent:latest
       - /usr/bin/easy_install awscli boto3
       - touch /etc/profile.d/99-dockercmd.sh
       - echo "alias dps='docker ps'" >> /etc/profile.d/99-dockercmd.sh
