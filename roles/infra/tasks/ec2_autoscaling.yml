@@ -3,10 +3,12 @@
 #
 ---
 
+
 - name: Set bootcommands
   set_fact:
     _bootcmd: |
       - yum update -y ecs-init
+      - docker pull amazon/amazon-ecs-agent:latest
       - /usr/bin/easy_install awscli boto3
       - touch /etc/profile.d/99-dockercmd.sh
       - echo "alias dps='docker ps'" >> /etc/profile.d/99-dockercmd.sh
@@ -17,17 +19,24 @@
       - echo 'function dex { x="$(dl)"; if [ -z "$x" ]; then echo "Container not running."; else docker exec -it $x "$@"; fi ;}' >> /etc/profile.d/99-dockercmd.sh
       {{ additional_user_data_bootcmd }}
 
+- name: Set write_files
+  set_fact:
+    _writes_files: |
+      - path: /etc/ecs/ecs.config
+        permissions: 0644
+        owner: root
+        content: |
+          ECS_CLUSTER={{ ecs_cluster_name }}
+          AWS_DEFAULT_REGION={{ aws_region }}
+          {{ additional_ecs_config | indent(4, false) }}
+      {{ additional_write_files }}
+
 - name: Determine userdata
   set_fact:
     _launch_config_user_data: |
       #cloud-config
       write_files:
-        - path: /etc/ecs/ecs.config
-          permissions: 0644
-          owner: root
-          content: |
-            ECS_CLUSTER={{ ecs_cluster_name }}
-            AWS_DEFAULT_REGION={{ aws_region }}
+        {{ _write_files | indent(2, false) }}
       bootcmd:
         {{ _bootcmd | indent(2, false) }}
 
