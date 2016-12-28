@@ -21,7 +21,7 @@
 
 - name: Set write_files
   set_fact:
-    _writes_files: |
+    _write_files: |
       - path: /etc/ecs/ecs.config
         permissions: 0644
         owner: root
