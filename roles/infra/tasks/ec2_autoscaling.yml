@@ -25,7 +25,7 @@
       - path: /etc/profile.d/99-dockercmd.sh
         permissions: 0644
         owner: root
-        content:
+        content: |
           {{ lookup('file', '../../default/files/etc/profile.d/99-dockercmd.sh') | indent(4, false) }}
       {{ additional_write_files }}
 
