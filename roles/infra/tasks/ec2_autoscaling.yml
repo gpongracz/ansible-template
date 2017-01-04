@@ -10,7 +10,7 @@
       - yum update -y ecs-init
       - docker pull amazon/amazon-ecs-agent:latest
       - /usr/bin/easy_install pip
-      - pip install boto3 boto awscli requests {{ additional_python_pip_packages }}
+      - /usr/local/bin/pip install boto3 boto awscli requests {{ additional_python_pip_packages }}
       {{ additional_user_data_bootcmd }}
 
 - name: Set write_files
