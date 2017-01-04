@@ -1,3 +1,4 @@
+alias watch ='watch '
 alias dps='docker ps'
 function dl { (docker ps | fgrep 'aws.com/kafka:' | awk '{print $1}'; docker ps -l -q) | head -1;}
 function dlog { x="$(dl)"; if [ -z "$x" ]; then echo "Container not running."; else docker logs "$@" $x; fi ;}
