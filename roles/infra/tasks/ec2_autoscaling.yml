@@ -9,7 +9,8 @@
     _bootcmd: |
       - yum update -y ecs-init
       - docker pull amazon/amazon-ecs-agent:latest
-      - /usr/bin/easy_install awscli boto3
+      - /usr/bin/easy_install pip
+      - pip install boto3 boto awscli requests {{ additional_python_pip_packages }}
       {{ additional_user_data_bootcmd }}
 
 - name: Set write_files
@@ -29,6 +30,12 @@
           {{ lookup('file', '../../default/files/etc/profile.d/99-dockercmd.sh') | indent(4, false) }}
       {{ additional_write_files }}
 
+- name: Set runcommands
+  set_fact:
+    _runcmd: |
+      - echo "this only get executed on the first boot"
+      {{ additional_user_data_runcmd }}
+
 - name: Determine userdata
   set_fact:
     _launch_config_user_data: |
@@ -37,6 +44,10 @@
         {{ _write_files | indent(2, false) }}
       bootcmd:
         {{ _bootcmd | indent(2, false) }}
+      runcmd:
+        {{ _runcmd | indent(2, false) }}
+      {{ additional_cloud_config_commands }}
+
 
 
 - name: Determine ECS ami

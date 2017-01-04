@@ -91,9 +91,12 @@ To activate the creation of an ASG, place in `infra/vars/main.yml` the following
 | launch_config_assign_public_ip                   | false    | env                                            | medium     | true means a public IP will be assigned to every new instance                                                                                |
 | application_port                                 |  9000    | infra                                          | high       | port that will be opened for your application                                                                                                |
 | application_security_group_additional_open_ports | []       | infra                                          | medium     | list of ports (from / port) to add to the security group                                                                                     |
-| additional_user_data_bootcmd | dummy echo commands (see default/main.yml) | infra | medium | multiline string that start by hyphens (-)
+| additional_user_data_bootcmd | dummy echo commands (see default/main.yml) | infra | medium | multiline string that start by hyphens (-). Will be run at every boot.
 | additional_ecs_config | var=val (see default/main.yml) | infra | medium | multiline string that allow you to configure the ECS agent (see ECS agent github)
 | additional_write_files | (see default/main.yml) | infra | medium | To write more files on boot
+| additional_user_data_runcmd | (see default/main.yml) | infra | medium | commands to run on first boot only
+| additional_cloud_config_commands | (see default/main.yml) | infra | medium | additional commands for cloud config (see cloud config official doc)
+| additional_python_pip_packages | space delimited list | infra | medium | additional python pip packages to install
 
 
 ## ELB
