@@ -1,0 +1,35 @@
+#
+# You can change default variables here
+#
+---
+
+# ECS related
+# ecs_environment_variables:
+#   - name: "MY_ENV_VAR"
+#     value: "{{ my_variable }}"
+#   - name: "MY_SECOND_VAR"
+#     value: "hardcoded"
+# ecs_additional_port_mappings:
+#   - containerPort: "8080"
+#     hostPort: "8080"
+
+# ecs_volume:
+#   from: /mnt
+#   to: /mnt
+
+# ecs_service_desired_count: 1
+
+# ecs_log_driver: "json-file" # other options include splunk, etc
+# ecs_log_options:         # options required based on log driver
+  # max-size: "4g"          # the log won't occupy all the disk space
+  # max-file: "10"        # example
+  # env: "ENV1,ENV2"        # example
+  # labels: "label1,label2" # example
+
+# ecs_volume_name: "mnt"
+
+
+### Task definitions specific.
+#docker_image_repo: "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"
+#docker_image_name: "{{ application_name }}"
+#docker_image_tag: "latest"

@@ -1,0 +1,20 @@
+#
+# You can change default variables here
+#
+---
+
+# ASG Related
+# asg_subnets: []
+# asg_additional_tags:
+#   - Name: "{{ application_name }}"
+#     propagate_at_launch: yes
+
+# asg_min_size: 1
+# asg_max_size: 1
+# asg_desired_capacity: 1
+
+# asg_override_desired_capacity: false
+
+# launch_config_instance_size: "t2.small"
+# launch_config_instance_profile_name: null
+# launch_config_assign_public_ip: false

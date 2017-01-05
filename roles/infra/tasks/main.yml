@@ -4,7 +4,8 @@
 ---
 
 # This is where we include the override, anything from set_default can be overridden here
-- include_vars: main.yml
+- include_vars:
+    dir: 'vars'
 
 # This applies any defaults after reading all vars
 - include: set_defaults.yml
@@ -24,4 +25,3 @@
 - include: ecs_task_definitions.yml
 
 - include: ecs_service.yml
-

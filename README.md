@@ -33,7 +33,7 @@ echo "12345">.vaultpassword
 
 infra vs env explanation
 
-## Global Variables
+## Main Variables
 
 | variable name          | default | env/infra guidance | importance | description                                                                                             |
 |------------------------|---------|-----------|------------|---------------------------------------------------------------------------------------------------------|

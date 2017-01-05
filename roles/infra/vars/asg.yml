@@ -1,0 +1,27 @@
+#
+# You can change default variables here
+#
+---
+#
+# additional_user_data_bootcmd: |
+#   - echo "you can add additional bootcommands"
+#   - echo "by overwriting the variable additional_user_data_bootcmd"
+#
+# additional_user_data_runcmd: |
+#   - echo "you can add additional runcommands"
+#   - echo "by overwriting the variable additional_user_data_runcmd"
+#
+# additional_ecs_config: |
+#   # you can add additional env variables by
+#   # override the ansible variable additional_ecs_config
+#
+# additional_write_files: |
+#   - path: /tmp/ansible_additional.txt
+#     permissions: 0644
+#     owner: root
+#     content: |
+#       Just an example of an additional file to write on boot
+#
+# additional_cloud_config_commands: ""
+#
+# additional_python_pip_packages: ""

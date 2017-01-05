@@ -1,0 +1,13 @@
+#
+# You can change default variables here
+#
+---
+
+# create_elb: true
+# application_port: 9000   # application port the ELB will redirect traffic to
+# elb_connection_draining_timeout: 60
+# elb_health_check_ping_path: "/"
+# elb_health_check_response_timeout: 5
+# elb_health_check_interval: 15
+# elb_health_check_unhealthy_threshold: 6
+# elb_health_check_healthy_threshold: 2

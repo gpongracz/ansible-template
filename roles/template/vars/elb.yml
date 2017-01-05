@@ -1,0 +1,10 @@
+#
+# You can change default variables here
+#
+---
+
+# elb_secure_https: false  # if set to true, will force traffic over https (443), else port (80)
+# elb_ssl_certificate_name: # if you set elb_secure_https variable, this variable should be set
+# elb_inbound_ips:
+#  - "192.168.0.0/24"     # they're CIDR
+#  - "192.168.1.0/24"
