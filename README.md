@@ -16,8 +16,10 @@ Requires Docker to be installed (tested with Docker 1.12)
 
 ## Running playbooks after configuration
 ```
-./run-playbook.sh dev.yml
-./run-playbook.sh prod.yml
+# Create a playbook (it will copy the roles/template folder to roles/<env>)
+./create-role.sh dev
+# Run the playbook
+./run-playbook.sh dev
 ```
 
 ## Adding password file and edit the secret variables
@@ -25,7 +27,6 @@ Requires Docker to be installed (tested with Docker 1.12)
 ```
 echo "12345">.vaultpassword
 ./editvault.sh dev
-./editvault.sh prod
 ```
 
 # Configuration - Ansible Variables
