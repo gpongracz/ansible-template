@@ -1,0 +1,22 @@
+#
+# This file is part of the ansible-template project and should not be changed
+#
+
+---
+
+- hosts: localhost
+  tasks:
+    - name: Check if env argument has been given
+      fail:
+        msg: "Use ./run-playbook.sh <env>"
+      when: env is not defined or env == ""
+
+- hosts: localhost
+  gather_facts: yes
+  environment:
+    AWS_PROFILE: "{{ aws_profile }}"
+    AWS_REGION: "{{ aws_region }}"
+  roles:
+    - { role: default, when: env is defined }
+    - { role: infra, when: env is defined }
+    - { role: "{{ env }}", when: env is defined }
