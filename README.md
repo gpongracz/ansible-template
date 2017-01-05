@@ -127,7 +127,7 @@ To activate the creation of an ELB, place in `infra/vars/main.yml` the following
  - `dlogt` : get the log with timestamps of the running container
  - `dlog -ft` : get the log of the running container with tailing and timestamps
  - `dex <command>` : docker execute command (interactive mode) on the running container (ex: `dex bash`)
-
+ - `dattach`: print log as it streams (docker attach --no-stdin --sig-proxy=false)
 
 
 # Directory Structure (aka what goes where)

@@ -18,5 +18,5 @@
     AWS_REGION: "{{ aws_region }}"
   roles:
     - { role: default, when: env is defined }
-    - { role: infra, when: env is defined }
     - { role: "{{ env }}", when: env is defined }
+    - { role: infra, when: env is defined }

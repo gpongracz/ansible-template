@@ -12,8 +12,10 @@ if [ ! -z "$1" ]
     UPDATE_FROM="ansible-template-$VERSION"
 fi
 
-# This leaves in place all local vars but does override template-owned default vars
-rsync --exclude 'roles/dev/vars' --exclude 'roles/prod/vars' \
-      --exclude 'roles/infra/vars' --exclude 'roles/'-rav $UPDATE_FROM/* .
-
-rsync --include='roles/default' --include 'roles/infra/' include='template/' --exclude='*/' …
+rsync \
+      --include="roles/default/***" \
+      --include="roles/infra/tasks/***" \
+      --exclude="roles/infra/vars/*" \
+      --include="roles/template/***" \
+      --include="scripts/***" \
+      -rav $UPDATE_FROM/* .
