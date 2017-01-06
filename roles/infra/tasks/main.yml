@@ -4,6 +4,8 @@
 ---
 
 # This is where we include the override, anything from set_default can be overridden here
+- include_vars: main.yml
+
 - include_vars:
     dir: 'vars'
 
