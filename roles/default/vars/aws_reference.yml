@@ -31,7 +31,7 @@ ecs_resources_per_instance_type:
     memory: 3954
   t2.large:
     cpu: 2048
-    memory: 8000
+    memory: 7986
   t2.xlarge:
     cpu: 4096
     memory: 16000
