@@ -118,7 +118,7 @@ To activate the creation of an ELB, place in `infra/vars/main.yml` the following
 | elb_health_check_interval            | 15      | infra              | medium     | see aws doc                                                                                                  |
 | elb_health_check_unhealthy_threshold | 6       | infra              | medium     | see aws doc                                                                                                  |
 | elb_health_check_healthy_threshold   | 2       | infra              | medium     | see aws doc                                                                                                  |
-| elb_scheme      |                    | internet-facing | infra      | medium     | see aws doc                                                                                                  |
+| elb_scheme                           | internet-facing | infra      | medium     | see aws doc                                                                                                  |
 # EC2 Instances Shortcuts (alias and functions)
 
  - `dps`: shortcut for `docker ps`
