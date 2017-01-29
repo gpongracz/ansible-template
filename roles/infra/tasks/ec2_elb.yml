@@ -49,6 +49,7 @@
   ec2_elb_lb:
     name: "{{ application_name }}"
     state: present
+    scheme: "{{ elb_scheme | default('internet-facing') }}"
     subnets: "{{ elb_subnets | join(',') }}"
     security_group_names: "['{{ application_name }}-elb']"
     connection_draining_timeout: "{{ elb_connection_draining_timeout }}"
