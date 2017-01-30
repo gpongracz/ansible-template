@@ -6,15 +6,15 @@
 # Launch config related
 # http://docs.aws.amazon.com/AmazonECS/latest/developerguide/launch_container_instance.html
 launch_config_amis_per_region:
-  ap-southeast-2:   "ami-5781be34"
-  ap-southeast-1:   "ami-a900a3ca"
-  ap-northeast-1:   "ami-9cd57ffd"
-  eu-central-1:     "ami-54f5303b"
-  us-east-1:        "ami-eca289fb"
-  us-east-2:        "ami-446f3521"
-  us-west-1:        "ami-9fadf8ff"
-  us-west-2:        "ami-7abc111a"
-  eu-west-1:        "ami-a1491ad2"
+  ap-southeast-2:   "ami-cf393cac"
+  ap-southeast-1:   "ami-9f75ddfc"
+  ap-northeast-1:   "ami-30bdce57"
+  eu-central-1:     "ami-38dc1157"
+  us-east-1:        "ami-a58760b3"
+  us-east-2:        "ami-a6e4bec3"
+  us-west-1:        "ami-74cb9b14"
+  us-west-2:        "ami-5b6dde3b"
+  eu-west-1:        "ami-e3fbd290"
 
 
 
@@ -31,7 +31,7 @@ ecs_resources_per_instance_type:
     memory: 3954
   t2.large:
     cpu: 2048
-    memory: 8000
+    memory: 7986
   t2.xlarge:
     cpu: 4096
     memory: 16000
