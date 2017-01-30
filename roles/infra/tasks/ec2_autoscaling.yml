@@ -22,13 +22,23 @@
         content: |
           ECS_CLUSTER={{ ecs_cluster_name }}
           AWS_DEFAULT_REGION={{ aws_region }}
-          ECS_AVAILABLE_LOGGING_DRIVERS=["awslogs","fluentd","gelf","json-file","journald","splunk","syslog"]	
+          ECS_AVAILABLE_LOGGING_DRIVERS=["awslogs","fluentd","gelf","json-file","journald","splunk","syslog"]
           {{ additional_ecs_config | indent(4, false) }}
       - path: /etc/profile.d/99-dockercmd.sh
         permissions: 0644
         owner: root
         content: |
           {{ lookup('file', '../../default/files/etc/profile.d/99-dockercmd.sh') | indent(4, false) }}
+      - path: /etc/security/limits.d/file_limit.conf
+        permissions: 0644
+        owner: root
+        content: |
+          {{ lookup('file', '../../default/files/etc/security/limits.d/file_limit.conf') | indent(4, false) }}
+      - path: /etc/sysconfig/docker
+        permissions: 0644
+        owner: root
+        content: |
+          {{ lookup('file', '../../default/files/etc/sysconfig/docker') | indent(4, false) }}
       {{ additional_write_files }}
 
 - name: Set runcommands
