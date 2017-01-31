@@ -47,6 +47,7 @@ ecs_taskdefinition_memory: "{{ resources_for_instance_type.memory }}"
 #   to: /mnt
 
 ecs_volume_name: "mnt"
+ecs_service_network_mode: "bridge"
 
 ecs_services:
   - name: "{{ application_name }}"
@@ -62,3 +63,4 @@ ecs_services:
           options: "{{ ecs_log_options }}"
         mountPoints: '{{ [{"containerPath": ecs_volume.to, "sourceVolume": ecs_volume_name}] if ecs_volume is defined else [] }}'
     volumes: '{{ [{"name": ecs_volume_name, "host":{"sourcePath": ecs_volume.from }}] if ecs_volume is defined else [] }}'
+    network_mode: "{{ ecs_service_network_mode }}"

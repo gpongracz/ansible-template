@@ -39,6 +39,7 @@
     state: present
     family: "{{ service.name }}"
     volumes: "{{ service.volumes | default (omit) }}"
+    network_mode: "{{ service.network_mode | default('bridge') }}"
   register: "_created_task_definition"
 
 - name: Add to registered containers
