@@ -1,4 +1,5 @@
 .idea
+*.iml
 .vaultpassword
 *.retry
 ansible-template-*

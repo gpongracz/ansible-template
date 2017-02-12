@@ -21,3 +21,5 @@ elb_health_check_interval: 15
 elb_health_check_unhealthy_threshold: 6
 elb_health_check_healthy_threshold: 2
 elb_secure_https: false
+elb_tags:
+  Name: "{{ application_name }}-elb"
