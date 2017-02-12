@@ -62,6 +62,5 @@
         interval: "{{ elb_health_check_interval }}" # seconds
         unhealthy_threshold: "{{ elb_health_check_unhealthy_threshold }}"
         healthy_threshold: "{{ elb_health_check_healthy_threshold }}"
-    tags:
-      Name: "{{ application_name }}-cache"
+    tags: "{{ elb_additional_tags }}"
   register: load_balancer

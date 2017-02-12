@@ -112,6 +112,7 @@ To activate the creation of an ELB, place in `infra/vars/main.yml` the following
 | application_port                     | 9000    | infra              | mandatory  | The application port that the ELB will talk to                                                               |
 | elb_secure_https                     | false   | env                | high       | set to true if you'd like to authorise https traffic.                                                        |
 | elb_ssl_certificate_name             |         | env                | high       | if elb_secure_https is set to true, you need to provide the ssl certificate name                             |
+| elb_additional_tags                  | [{"Name":"{{ application_name }}-elb"}]       | common structure in infra, env specific in env | high       | Dict of tags to apply to your ELB |
 | elb_health_check_ping_path           | /       | infra              | high       | ping path for health checks (your application need to have a health check route that returns 200 if healthy) |
 | elb_connection_draining_timeout      | 60      | infra              | medium     | see aws doc                                                                                                  |
 | elb_health_check_response_timeout    | 5       | infra              | medium     | see aws doc                                                                                                  |
