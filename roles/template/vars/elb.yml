@@ -8,5 +8,5 @@
 # elb_inbound_ips:
 #  - "192.168.0.0/24"     # they're CIDR
 #  - "192.168.1.0/24"
-# elb_additional_tags:
+# elb_tags:
 #   Name: "{{ application_name }}-elb"
