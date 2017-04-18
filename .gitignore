@@ -2,4 +2,6 @@
 *.iml
 .vaultpassword
 *.retry
+.*.swp
+*~
 ansible-template-*
