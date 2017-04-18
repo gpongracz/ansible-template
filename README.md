@@ -1,3 +1,5 @@
+# [DEPRECATED] Please move over to https://github.com/simple-machines/ansible-aws-infra-services
+
 # Getting Started
 
 This template is supposed to live inside a deployable or infrastructure project and can self-update.
